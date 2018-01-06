@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkers</title>
+    <style>
+        body{
+            background-color: #04dd8a;
+        }
+    </style>
+</head>
+<body>
+
+<svg stroke="black" fill="yellow" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <symbol id="field">
+            <rect width="400" height="400" fill="#D6BEA3"></rect>
+        </symbol>
+        <symbol id="check">
+            <rect width="50" height="50" stroke="black" fill="#605448"></rect>
+        </symbol>
+        <symbol id="check1">
+            <rect width="50" height="50" x="483" y="31" stroke="black" fill="#605448"></rect>
+            <rect width="50" height="50" x="583" y="31" stroke="black" fill="#605448"></rect>
+            <rect width="50" height="50" x="683" y="31" stroke="black" fill="#605448"></rect>
+            <rect width="50" height="50" x="783" y="31" stroke="black" fill="#605448"></rect>
+        </symbol>
+        <symbol id="white">
+            <circle r="20" cx="25" cy="25" fill="white" stroke-width="2" stroke="gray"></circle>
+            <circle r="15" cx="25" cy="25" fill="white" stroke-width="2" stroke="gray"></circle>
+            <circle r="10" cx="25" cy="25" fill="white" stroke-width="2" stroke="gray"></circle>
+        </symbol>
+        <symbol id="black">
+            <circle r="20" cx="25" cy="25" fill="black" stroke-width="2" stroke="gray"></circle>
+            <circle r="15" cx="25" cy="25" fill="black" stroke-width="2" stroke="gray"></circle>
+            <circle r="10" cx="25" cy="25" fill="black" stroke-width="2" stroke="gray"></circle>
+        </symbol>
+        <symbol id="text">
+            <text x="0" y="50" font-size="35px" text-anchor="start">a</text>
+            <text x="50" y="50" font-size="35px" text-anchor="start">b</text>
+            <text x="100" y="50" font-size="35px" text-anchor="start">c</text>
+            <text x="150" y="50" font-size="35px" text-anchor="start">d</text>
+            <text x="200" y="50" font-size="35px" text-anchor="start">e</text>
+            <text x="250" y="50" font-size="35px" text-anchor="start">f</text>
+            <text x="300" y="50" font-size="35px" text-anchor="start">h</text>
+            <text x="350" y="50" font-size="35px" text-anchor="start">g</text>
+        </symbol>
+        <symbol id="numbers">
+            <text x="50" y="50" font-size="35px" stroke="black" text-anchor="start">1</text>
+            <text x="50" y="100" font-size="35px" stroke="black" text-anchor="start">2</text>
+            <text x="50" y="150" font-size="35px" stroke="black" text-anchor="start">3</text>
+            <text x="50" y="200" font-size="35px" stroke="black" text-anchor="start">4</text>
+            <text x="50" y="250" font-size="35px" stroke="black" text-anchor="start">5</text>
+            <text x="50" y="300" font-size="35px" stroke="black" text-anchor="start">6</text>
+            <text x="50" y="350" font-size="35px" stroke="black" text-anchor="start">7</text>
+            <text x="50" y="400" font-size="35px" stroke="black" text-anchor="start">8</text>
+        </symbol>
+    </defs>
+    <use xlink:href="#field" x="483" y="81"></use>
+    <use xlink:href="#numers" x="483" y="81"></use>
+
+
+</svg>
+<script src="checkers.js"></script>
+</body>
+</html>
