@@ -25,8 +25,8 @@ function textMarkup(parentElem, xField, yField) {
     let y = yField - 60;
     let elem = document.createElementNS('http://www.w3.org/2000/svg', 'use');
     elem.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#text');
-    elem.setAttribute('x', "" + x + "");
-    elem.setAttribute('y', "" + y + "");
+    elem.setAttribute('x', x);
+    elem.setAttribute('y', y);
     elem.setAttribute('fill', "black");
     parentElem.appendChild(elem);
 }
@@ -35,8 +35,8 @@ function numberMarkup( parentElem, xField, yField) {
     let y = yField - 10;
     let elem = document.createElementNS('http://www.w3.org/2000/svg', 'use');
     elem.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#numbers');
-    elem.setAttribute('x', "" + x + "");
-    elem.setAttribute('y', "" + y + "");
+    elem.setAttribute('x', x);
+    elem.setAttribute('y', y);
     elem.setAttribute('fill', "black");
     parentElem.appendChild(elem);
 }
