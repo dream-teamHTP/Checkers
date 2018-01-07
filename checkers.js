@@ -35,6 +35,7 @@ function textMarkup(parentElem, xField, yField) {
     elem.setAttribute('fill', "black");
     parentElem.appendChild(elem);
 }
+
 function numberMarkup( parentElem, xField, yField) {
     let x = xField - 80;
     let y = yField - 10;
@@ -50,7 +51,7 @@ function buildGameField(parentElem, xField, yField, whiteFirst) {
     textMarkup(parentElem, xField, yField);
     numberMarkup(parentElem, xField, yField);
     let y = yField;
-    for (var i = 1; i < 9; i++) {
+    for (let i = 1; i < 9; i++) {
         let x = xField;
         if (i % 2 === 0) {//Сдвиг четных полей на 50px вправо
             x += 50;
@@ -74,9 +75,6 @@ function buildGameField(parentElem, xField, yField, whiteFirst) {
         y += 50;
     }
 }
-
 let xStart = 483;
 let yStart = 80;
 buildGameField(SVG_ELEMENT, xStart, yStart, false);
-
-
