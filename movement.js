@@ -1,19 +1,23 @@
 /**
  * Created by Alexander Balabolov
  * 06.01.2018
- * */
+ */
 
 'use strict';
+
+/**
+ * Current drag element.
+ */
 let cells = {dragChecker: null};
 
 /**
- * An object for every checker.
+ * An object for every cell.
  * @field element - jQuery element of cell
  * @field offsetLeft - offset from left body
  * @field offsetTop - offset from top body
  * @field id - the id of current cell
  * @field checker - current checker in this cell
- * */
+ */
 function Cell(cell, cellId, offsetLeft, offsetTop) {
     this.element = $(cell);
     this.offsetLeft = offsetLeft;
@@ -33,7 +37,7 @@ function fillCells(check, coordinateY, coordinateX, offsetLeft, offsetTop) {
 }
 
 let droppableOptions = {
-    accept:"cell"
+    accept: "cell"
 };
 
 /**
@@ -47,7 +51,8 @@ let droppableOptions = {
  * @field diffLeft - difference between mouse click width and element width
  * @field isDropped - true if the element was dropped
  * @field isQueen - true if the element was queen
- * */
+ */
+
 function Checker(ches, prefix, id, offsetLeft, offsetTop) {
     this.element = $(ches);
     this.offsetLeft = offsetLeft;
@@ -62,7 +67,7 @@ function Checker(ches, prefix, id, offsetLeft, offsetTop) {
     /**
      * Sets current checker to the top of all checkers
      */
-    Checker.prototype.setCheckerToTop = function() {
+    Checker.prototype.setCheckerToTop = function () {
         this.element.parent().append(this.element);
     };
 
@@ -124,4 +129,3 @@ let draggableOptions = {
         checker.element.attr('x', "" + checker.offsetLeft);
     }
 };
-
