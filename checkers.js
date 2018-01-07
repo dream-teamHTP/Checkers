@@ -18,6 +18,11 @@ function createElement(identificator, parentElem, chId, x, y, idi, idj) {
         elem.setAttribute('id', "" + idi + idj);
     }
     parentElem.appendChild(elem);
+    if (chId !== null) {
+        fillCheckers(elem, chId, idi, idj, x, y);
+    } else {
+        fillCells(elem, idi, idj, x, y);
+    }
 }
 
 function textMarkup(parentElem, xField, yField) {
