@@ -141,8 +141,8 @@ let draggableOptions = {
         let checker = cells.dragChecker;
         checker.offsetLeft = event.clientX - checker.diffLeft;
         checker.offsetTop = event.clientY - checker.diffTop;
-        checker.element.attr('y', "" + checker.offsetTop);
-        checker.element.attr('x', "" + checker.offsetLeft);
+        checker.element.attr('cy', "" + checker.offsetTop);
+        checker.element.attr('cx', "" + checker.offsetLeft);
     }
 };
 

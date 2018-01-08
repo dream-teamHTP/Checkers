@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="48ee7221-10b7-4848-89c4-ad802a52ffc6" name="Default" comment="Создание доски из новых элементов.">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/movement.js" afterPath="$PROJECT_DIR$/movement.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -14,51 +15,34 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="Checkers.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Checkers.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-196">
-              <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="23" selection-end-column="17" />
-              <folding>
-                <element signature="n#symbol#0;n#defs#0;n#svg#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-                <element signature="n#symbol#1;n#defs#0;n#svg#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-                <element signature="n#symbol#2;n#defs#0;n#svg#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-                <element signature="n#symbol#3;n#defs#0;n#svg#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-                <element signature="n#symbol#4;n#defs#0;n#svg#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-                <element signature="n#symbol#5;n#defs#0;n#svg#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-              </folding>
+            <state relative-caret-position="17">
+              <caret line="3" column="26" lean-forward="true" selection-start-line="3" selection-start-column="26" selection-end-line="3" selection-end-column="26" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="checkers.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="checkers.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/checkers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-89">
+            <state relative-caret-position="-51">
               <caret line="46" column="43" lean-forward="false" selection-start-line="46" selection-start-column="43" selection-end-line="46" selection-end-column="43" />
-              <folding>
-                <element signature="n#!!block;n#createElement#0" expanded="false" />
-                <element signature="e#522#1006#0" expanded="false" />
-                <element signature="e#606#800#0" expanded="false" />
-                <element signature="e#806#1000#0" expanded="false" />
-                <element signature="e#1044#1178#0" expanded="false" />
-                <element signature="e#1183#1215#0" expanded="false" />
-                <element signature="n#!!block;n#createField#0" expanded="false" />
-                <element signature="n#!!block;n#createWhiteCheck#0" expanded="false" />
-                <element signature="n#!!block;n#createBlackCheck#0" expanded="false" />
-                <element signature="n#!!block;n#createRect#0" expanded="false" />
-                <element signature="n#!!block;n#textMarkup#0" expanded="false" />
-                <element signature="n#!!block;n#numberMarkup#0" expanded="false" />
-                <element signature="n#!!block;n#buildGameField#0" expanded="false" />
-                <element signature="e#3593#4329#0" expanded="false" />
-                <element signature="e#3644#3711#0" expanded="false" />
-                <element signature="e#3748#4306#0" expanded="false" />
-                <element signature="e#3898#4083#0" expanded="false" />
-                <element signature="e#4089#4274#0" expanded="false" />
-              </folding>
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="movement.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/movement.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="570">
+              <caret line="163" column="32" lean-forward="false" selection-start-line="163" selection-start-column="32" selection-end-line="163" selection-end-column="32" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -66,38 +50,9 @@
       <file leaf-file-name="checkers.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/checkers.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="26">
+            <state relative-caret-position="17">
               <caret line="1" column="30" lean-forward="false" selection-start-line="1" selection-start-column="30" selection-end-line="1" selection-end-column="30" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="checkers.js" pinned="false" current-in-tab="false">
-        <entry file="vcs://E:/FS_JD/JavaScript/Project/Checkers/checkers.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="8" column="3" lean-forward="false" selection-start-line="8" selection-start-column="3" selection-end-line="8" selection-end-column="3" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="JavaScript-modules-diagram/E:/FS_JD/JavaScript/Project/Checkers/checkers.js" pinned="false" current-in-tab="false">
-        <entry file="uml://JavaScript-modules-diagram/E:/FS_JD/JavaScript/Project/Checkers/checkers.js">
-          <provider selected="true" editor-type-id="UmlEditorProvider">
-            <state>
-              <ID>JavaScript-modules-diagram</ID>
-              <OriginalElement>$PROJECT_DIR$/checkers.js</OriginalElement>
-              <nodes />
-              <notes />
-              <edges />
-              <settings layout="Hierarchic Group" zoom="1.0" x="240.0" y="-120.0" />
-              <SelectedNodes />
-              <Categories>
-                <Category>All</Category>
-              </Categories>
-              <VISIBILITY>Details</VISIBILITY>
             </state>
           </provider>
         </entry>
@@ -130,6 +85,7 @@
       <list>
         <option value="$PROJECT_DIR$/Checkers.html" />
         <option value="$PROJECT_DIR$/checkers.js" />
+        <option value="$PROJECT_DIR$/movement.js" />
       </list>
     </option>
   </component>
@@ -140,12 +96,13 @@
     <exe-path />
     <annotation-enable>false</annotation-enable>
     <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
   </component>
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="1382" />
@@ -170,16 +127,13 @@
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Checkers" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Checkers" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
+          <expand>
+            <path>
+              <item name="dream-teamHTP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dream-teamHTP" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
         </subPane>
       </pane>
     </panes>
@@ -206,6 +160,14 @@
     </option>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+    </configuration>
     <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
       <method />
     </configuration>
@@ -243,15 +205,6 @@
       <option name="filePath" />
       <method />
     </configuration>
-    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
-      <node-interpreter>project</node-interpreter>
-      <node-options />
-      <gulpfile />
-      <tasks />
-      <arguments />
-      <envs />
-      <method />
-    </configuration>
     <configuration default="true" type="js.build_tools.npm" factoryName="npm">
       <command value="run" />
       <scripts />
@@ -287,6 +240,7 @@
       <workItem from="1513959170415" duration="54000" />
       <workItem from="1515240690717" duration="5780000" />
       <workItem from="1515433449691" duration="1019000" />
+      <workItem from="1515445106867" duration="361000" />
     </task>
     <task id="LOCAL-00001" summary="Создание доски из новых элементов.">
       <created>1515433805425</created>
@@ -299,22 +253,23 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25757000" />
+    <option name="totallyTimeSpent" value="26118000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1186" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1193265" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14857745" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3291536" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3291536" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31493816" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -324,7 +279,7 @@
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="processedProjectFiles" value="true" />
+    <option name="version" value="1" />
   </component>
   <component name="Vcs.Log.History.Properties">
     <option name="COLUMN_ORDER">
@@ -334,6 +289,32 @@
         <option value="3" />
         <option value="1" />
       </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
     </option>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -352,16 +333,57 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Checkers.html">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="23" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/checkers.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="30" lean-forward="false" selection-start-line="1" selection-start-column="30" selection-end-line="1" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://JavaScript-modules-diagram/E:/FS_JD/JavaScript/Project/Checkers/checkers.js">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>JavaScript-modules-diagram</ID>
+          <OriginalElement>E:/FS_JD/JavaScript/Project/Checkers/checkers.js</OriginalElement>
+          <nodes>
+            <node x="" y="">$PROJECT_DIR$/Checkers.html</node>
+            <node x="" y="">$PROJECT_DIR$/checkers.css</node>
+            <node x="" y="">$PROJECT_DIR$/checkers.js</node>
+            <node x="" y="">$PROJECT_DIR$/libs/jquery-3.2.1.js</node>
+            <node x="" y="">$PROJECT_DIR$/libs/jquery-ui.js</node>
+            <node x="" y="">$PROJECT_DIR$/movement.js</node>
+          </nodes>
+          <notes />
+          <edges />
+          <settings layout="Hierarchic Group" zoom="1.0" x="869.0" y="-40.0" />
+          <SelectedNodes />
+          <Categories>
+            <Category>All</Category>
+          </Categories>
+          <VISIBILITY>Details</VISIBILITY>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/checkers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="46" column="43" lean-forward="false" selection-start-line="46" selection-start-column="43" selection-end-line="46" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Checkers.html">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#symbol#0;n#defs#0;n#svg#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#symbol#1;n#defs#0;n#svg#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#symbol#2;n#defs#0;n#svg#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#symbol#3;n#defs#0;n#svg#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#symbol#4;n#defs#0;n#svg#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#symbol#5;n#defs#0;n#svg#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -369,26 +391,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1092">
           <caret line="42" column="27" lean-forward="true" selection-start-line="42" selection-start-column="27" selection-end-line="42" selection-end-column="27" />
-          <folding>
-            <element signature="n#!!block;n#createElement#0" expanded="false" />
-            <element signature="e#522#1006#0" expanded="false" />
-            <element signature="e#606#800#0" expanded="false" />
-            <element signature="e#806#1000#0" expanded="false" />
-            <element signature="e#1044#1178#0" expanded="false" />
-            <element signature="e#1183#1215#0" expanded="false" />
-            <element signature="n#!!block;n#createField#0" expanded="false" />
-            <element signature="n#!!block;n#createWhiteCheck#0" expanded="false" />
-            <element signature="n#!!block;n#createBlackCheck#0" expanded="false" />
-            <element signature="n#!!block;n#createRect#0" expanded="false" />
-            <element signature="n#!!block;n#textMarkup#0" expanded="false" />
-            <element signature="n#!!block;n#numberMarkup#0" expanded="false" />
-            <element signature="n#!!block;n#buildGameField#0" expanded="false" />
-            <element signature="e#3593#4329#0" expanded="false" />
-            <element signature="e#3644#3711#0" expanded="false" />
-            <element signature="e#3748#4306#0" expanded="false" />
-            <element signature="e#3898#4083#0" expanded="false" />
-            <element signature="e#4089#4274#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -400,38 +403,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/checkers.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="26">
-          <caret line="1" column="30" lean-forward="false" selection-start-line="1" selection-start-column="30" selection-end-line="1" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Checkers.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-196">
-          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="23" selection-end-column="17" />
-          <folding>
-            <element signature="n#symbol#0;n#defs#0;n#svg#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#symbol#1;n#defs#0;n#svg#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#symbol#2;n#defs#0;n#svg#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#symbol#3;n#defs#0;n#svg#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#symbol#4;n#defs#0;n#svg#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#symbol#5;n#defs#0;n#svg#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="uml://JavaScript-modules-diagram/E:/FS_JD/JavaScript/Project/Checkers/checkers.js">
       <provider selected="true" editor-type-id="UmlEditorProvider">
         <state>
           <ID>JavaScript-modules-diagram</ID>
-          <OriginalElement>$PROJECT_DIR$/checkers.js</OriginalElement>
-          <nodes />
+          <OriginalElement>E:/FS_JD/JavaScript/Project/Checkers/checkers.js</OriginalElement>
+          <nodes>
+            <node x="" y="">$PROJECT_DIR$/Checkers.html</node>
+            <node x="" y="">$PROJECT_DIR$/checkers.css</node>
+            <node x="" y="">$PROJECT_DIR$/checkers.js</node>
+            <node x="" y="">$PROJECT_DIR$/libs/jquery-3.2.1.js</node>
+            <node x="" y="">$PROJECT_DIR$/libs/jquery-ui.js</node>
+            <node x="" y="">$PROJECT_DIR$/movement.js</node>
+          </nodes>
           <notes />
           <edges />
-          <settings layout="Hierarchic Group" zoom="1.0" x="240.0" y="-120.0" />
+          <settings layout="Hierarchic Group" zoom="1.0" x="869.0" y="-40.0" />
           <SelectedNodes />
           <Categories>
             <Category>All</Category>
@@ -440,30 +427,35 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/checkers.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="30" lean-forward="false" selection-start-line="1" selection-start-column="30" selection-end-line="1" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Checkers.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="3" column="26" lean-forward="true" selection-start-line="3" selection-start-column="26" selection-end-line="3" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/checkers.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-89">
+        <state relative-caret-position="-51">
           <caret line="46" column="43" lean-forward="false" selection-start-line="46" selection-start-column="43" selection-end-line="46" selection-end-column="43" />
-          <folding>
-            <element signature="n#!!block;n#createElement#0" expanded="false" />
-            <element signature="e#522#1006#0" expanded="false" />
-            <element signature="e#606#800#0" expanded="false" />
-            <element signature="e#806#1000#0" expanded="false" />
-            <element signature="e#1044#1178#0" expanded="false" />
-            <element signature="e#1183#1215#0" expanded="false" />
-            <element signature="n#!!block;n#createField#0" expanded="false" />
-            <element signature="n#!!block;n#createWhiteCheck#0" expanded="false" />
-            <element signature="n#!!block;n#createBlackCheck#0" expanded="false" />
-            <element signature="n#!!block;n#createRect#0" expanded="false" />
-            <element signature="n#!!block;n#textMarkup#0" expanded="false" />
-            <element signature="n#!!block;n#numberMarkup#0" expanded="false" />
-            <element signature="n#!!block;n#buildGameField#0" expanded="false" />
-            <element signature="e#3593#4329#0" expanded="false" />
-            <element signature="e#3644#3711#0" expanded="false" />
-            <element signature="e#3748#4306#0" expanded="false" />
-            <element signature="e#3898#4083#0" expanded="false" />
-            <element signature="e#4089#4274#0" expanded="false" />
-          </folding>
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/movement.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="163" column="32" lean-forward="false" selection-start-line="163" selection-start-column="32" selection-end-line="163" selection-end-column="32" />
+          <folding />
         </state>
       </provider>
     </entry>
