@@ -6,23 +6,68 @@ const SVG_HEIGHT = document.documentElement.clientHeight;
 
 SVG_ELEMENT.setAttribute('width', "" + SVG_WIDTH + "");
 SVG_ELEMENT.setAttribute('height', "" + SVG_HEIGHT + "");
-
+let r = 20;
+let w = 50;
+let h = 50;
 function createElement(identificator, parentElem, chId, x, y, idi, idj) {
-    let elem = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-    elem.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', identificator);
-    elem.setAttribute('x', x);
-    elem.setAttribute('y', y);
+    let elem = document.createElementNS('http://www.w3.org/2000/svg', identificator);
     if (chId != null) {
-        elem.setAttribute('id', chId + idi + idj);
+        elem.setAttribute('id', "" + idi + idj + chId);
+        if (chId === "w") {
+            x += 25;
+            y += 25;
+            createWhiteCheck(elem, r, x, y);
+            parentElem.appendChild(elem);
+            fillCheckers(elem, chId, idi, idj, x, y);
+        } else {
+            x += 25;
+            y += 25;
+            createBlackCheck(elem, r, x, y);
+            parentElem.appendChild(elem);
+            fillCheckers(elem, chId, idi, idj, x, y);
+        }
     } else if (idi != null && idj != null) {
-        elem.setAttribute('id', "" + idi + idj);
-    }
-    parentElem.appendChild(elem);
-    if (chId !== null) {
-        fillCheckers(elem, chId, idi, idj, x, y);
-    } else {
+        createRect(elem, x, y, idi, idj, w, h);
+        parentElem.appendChild(elem);
         fillCells(elem, idi, idj, x, y);
     }
+    // parentElem.appendChild(elem);
+    // fillCheckers(elem, chId, idi, idj, x, y);
+}
+
+function createField(parentElem, chId, x, y, idi, idj) {
+    let elem = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    elem.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#field');
+    elem.setAttribute('x', x);
+    elem.setAttribute('y', y);
+    elem.setAttribute('id', 'fields');
+    parentElem.appendChild(elem);
+}
+
+function createWhiteCheck(elem, r, cx, cy) {
+    elem.setAttributeNS(null, 'fill', 'white');
+    elem.setAttributeNS(null, 'stroke', 'black');
+    elem.setAttributeNS(null, 'stroke-width', '3');
+    elem.setAttribute('r', r);
+    elem.setAttribute('cx', cx);
+    elem.setAttribute('cy', cy);
+}
+function createBlackCheck(elem, r, cx, cy) {
+    elem.setAttributeNS(null, 'fill', 'black');
+    elem.setAttributeNS(null, 'stroke', 'white');
+    elem.setAttributeNS(null, 'stroke-width', '3');
+    elem.setAttribute('r', r);
+    elem.setAttribute('cx', cx);
+    elem.setAttribute('cy', cy);
+}
+function createRect(elem, x, y, idi, idj, w, h) {
+    elem.setAttribute('id', "" + idi + idj);
+    elem.setAttribute('width', w);
+    elem.setAttribute('height', h);
+    elem.setAttribute('fill', '#838385');
+    elem.setAttribute('stroke', 'black');
+    elem.setAttribute('x', x);
+    elem.setAttribute('y', y);
 }
 
 function textMarkup(parentElem, xField, yField) {
@@ -35,8 +80,7 @@ function textMarkup(parentElem, xField, yField) {
     elem.setAttribute('fill', "black");
     parentElem.appendChild(elem);
 }
-
-function numberMarkup( parentElem, xField, yField) {
+function numberMarkup(parentElem, xField, yField) {
     let x = xField - 80;
     let y = yField - 10;
     let elem = document.createElementNS('http://www.w3.org/2000/svg', 'use');
@@ -47,7 +91,7 @@ function numberMarkup( parentElem, xField, yField) {
     parentElem.appendChild(elem);
 }
 function buildGameField(parentElem, xField, yField, whiteFirst) {
-    createElement('#field', parentElem, null, xField, yField, null, null);
+    createField(parentElem, null, xField, yField, null, null);
     textMarkup(parentElem, xField, yField);
     numberMarkup(parentElem, xField, yField);
     let y = yField;
@@ -57,24 +101,25 @@ function buildGameField(parentElem, xField, yField, whiteFirst) {
             x += 50;
         }
         for (var j = 1; j < 5; j++) {
-            var idi = i;
-            var idj = j;
-            createElement('#check', parentElem, null, x, y, idi, idj);
-            if (whiteFirst) {
-                if (i < 4) createElement('#white', parentElem, 'w', x, y, idi, idj);
-                if (i > 5) createElement('#black', parentElem, 'b', x, y, idi, idj);
-            } else {
-                if (i < 4) createElement('#black', parentElem, 'w', x, y, idi, idj);
-                if (i > 5) createElement('#white', parentElem, 'b', x, y, idi, idj);
-            }
+            let idi = i;
+            let idj = j;
+            createElement('rect', parentElem, null, x, y, idi, idj);
 
-            // createElement('#white', svgMainField, 'w', x, y, idi, idj);
-            // createElement('#black', svgMainField, 'b', x, y, idi, idj);
+            if (whiteFirst) {
+                if (i < 4) createElement('circle', parentElem, 'w', x, y, idi, idj);
+                if (i > 5) createElement('circle', parentElem, 'b', x, y, idi, idj);
+            } else {
+                if (i < 4) createElement('circle', parentElem, 'w', x, y, idi, idj);
+                if (i > 5) createElement('circle', parentElem, 'b', x, y, idi, idj);
+            }
             x += 100;
         }
         y += 50;
     }
 }
+
 let xStart = 483;
 let yStart = 80;
 buildGameField(SVG_ELEMENT, xStart, yStart, false);
+
+
