@@ -1,3 +1,40 @@
 body{
     background-color: #04dd8a;
 }
+
+div {
+    width: 50px;
+    height: 50px;
+    position: relative;
+}
+
+.text {
+    /*display: inline-block;*/
+    width: 50px;
+    height: 50px;
+    font-size: 36px;
+    text-align: center;
+    vertical-align: middle;
+    position: absolute;
+}
+
+.black {
+    background-color: #969696;
+    position: absolute;
+}
+
+div > img {
+    position: absolute;
+    /*top: 10%;*/
+    /*left: 10%;*/
+}
+
+.field {
+    width: 400px;
+    height: 400px;
+    position: relative;
+    top: 100px;
+    left: calc(100% / 2 - 200px);
+    border: 1px solid black;
+    background-color: #c9c9c9;
+}
