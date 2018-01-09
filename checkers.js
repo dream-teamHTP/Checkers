@@ -1,125 +1,91 @@
 'use strict'
+const text = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
-const SVG_ELEMENT = document.getElementsByTagName('svg')[0];
-const SVG_WIDTH = document.documentElement.clientWidth;
-const SVG_HEIGHT = document.documentElement.clientHeight;
+function createCells(cssClass, x, y, idi, idj) {
+    let div = $("<div>");
+    div.attr('id', "" + idi + idj);
+    div.css({
+        top: `${y}px`,
+        left: `${x}px`
+    });
+    div.addClass(cssClass);
+    return div;
+}
+function createChess(src, alt, chId, idi, idj) {
+    let img = $("<img>");
+    img.attr({
+        "src": `${src}`,
+        "alt": `${alt}`,
+        "position": "absolute",
+        "top": "10%",
+        "left": "10%",
+        "id": `${chId + idi + idj}`
+    });
+    return img;
 
-SVG_ELEMENT.setAttribute('width', "" + SVG_WIDTH + "");
-SVG_ELEMENT.setAttribute('height', "" + SVG_HEIGHT + "");
-let r = 20;
-let w = 50;
-let h = 50;
-function createElement(identificator, parentElem, chId, x, y, idi, idj) {
-    let elem = document.createElementNS('http://www.w3.org/2000/svg', identificator);
-    if (chId != null) {
-        elem.setAttribute('id', "" + idi + idj + chId);
-        if (chId === "w") {
-            x += 25;
-            y += 25;
-            createWhiteCheck(elem, r, x, y);
-            parentElem.appendChild(elem);
-            fillCheckers(elem, chId, idi, idj, x, y);
-        } else {
-            x += 25;
-            y += 25;
-            createBlackCheck(elem, r, x, y);
-            parentElem.appendChild(elem);
-            fillCheckers(elem, chId, idi, idj, x, y);
-        }
-    } else if (idi != null && idj != null) {
-        createRect(elem, x, y, idi, idj, w, h);
-        parentElem.appendChild(elem);
-        fillCells(elem, idi, idj, x, y);
+}
+function createField(parrent, cssClass) {
+    let div = $('<div>');
+    div.addClass(cssClass);
+    parrent.prepend(div);
+}
+function createMarkUp(parrent, cssClass, idi, x, y) {
+    let div = $('<div>');
+    div.text(text[idi]);
+    div.addClass(cssClass);
+    div.css({
+        top: `${y}px`,
+        left: `${x}px`
+    });
+    parrent.append(div);
+}
+function createNumeration(parrent, cssClass, idi, x, y) {
+    let div = $('<div>');
+    div.text(idi + 1);
+    div.addClass(cssClass);
+    div.css({
+        top: `${y}px`,
+        left: `${x}px`
+    });
+    parrent.append(div);
+}
+
+function buildGameField() {
+    let body = $("body");
+    createField(body, "field");
+    let field = $(".field");
+    let y = 0;
+    let YY = 0;
+    let YX = 0;
+    for (let y = 0; y < 8; y++) {
+        createMarkUp(field, "text", y, YX, "-50");
+        createNumeration(field, "text", y, "-50", YY);
+        YX += 50;
+        YY += 50;
     }
-    // parentElem.appendChild(elem);
-    // fillCheckers(elem, chId, idi, idj, x, y);
-}
-
-function createField(parentElem, chId, x, y, idi, idj) {
-    let elem = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-    elem.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#field');
-    elem.setAttribute('x', x);
-    elem.setAttribute('y', y);
-    elem.setAttribute('id', 'fields');
-    parentElem.appendChild(elem);
-}
-
-function createWhiteCheck(elem, r, cx, cy) {
-    elem.setAttributeNS(null, 'fill', 'white');
-    elem.setAttributeNS(null, 'stroke', 'black');
-    elem.setAttributeNS(null, 'stroke-width', '3');
-    elem.setAttribute('r', r);
-    elem.setAttribute('cx', cx);
-    elem.setAttribute('cy', cy);
-}
-function createBlackCheck(elem, r, cx, cy) {
-    elem.setAttributeNS(null, 'fill', 'black');
-    elem.setAttributeNS(null, 'stroke', 'white');
-    elem.setAttributeNS(null, 'stroke-width', '3');
-    elem.setAttribute('r', r);
-    elem.setAttribute('cx', cx);
-    elem.setAttribute('cy', cy);
-}
-function createRect(elem, x, y, idi, idj, w, h) {
-    elem.setAttribute('id', "" + idi + idj);
-    elem.setAttribute('width', w);
-    elem.setAttribute('height', h);
-    elem.setAttribute('fill', '#838385');
-    elem.setAttribute('stroke', 'black');
-    elem.setAttribute('x', x);
-    elem.setAttribute('y', y);
-}
-
-function textMarkup(parentElem, xField, yField) {
-    let x = xField + 15;
-    let y = yField - 60;
-    let elem = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-    elem.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#text');
-    elem.setAttribute('x', x);
-    elem.setAttribute('y', y);
-    elem.setAttribute('fill', "black");
-    parentElem.appendChild(elem);
-}
-function numberMarkup(parentElem, xField, yField) {
-    let x = xField - 80;
-    let y = yField - 10;
-    let elem = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-    elem.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#numbers');
-    elem.setAttribute('x', x);
-    elem.setAttribute('y', y);
-    elem.setAttribute('fill', "black");
-    parentElem.appendChild(elem);
-}
-function buildGameField(parentElem, xField, yField, whiteFirst) {
-    createField(parentElem, null, xField, yField, null, null);
-    textMarkup(parentElem, xField, yField);
-    numberMarkup(parentElem, xField, yField);
-    let y = yField;
     for (let i = 1; i < 9; i++) {
-        let x = xField;
-        if (i % 2 === 0) {//Сдвиг четных полей на 50px вправо
-            x += 50;
-        }
-        for (var j = 1; j < 5; j++) {
-            let idi = i;
+        let idi = i;
+        let x = 0;
+        if (i % 2 == 0) x += 50;
+        for (let j = 1; j < 5; j++) {
             let idj = j;
-            createElement('rect', parentElem, null, x, y, idi, idj);
-
-            if (whiteFirst) {
-                if (i < 4) createElement('circle', parentElem, 'w', x, y, idi, idj);
-                if (i > 5) createElement('circle', parentElem, 'b', x, y, idi, idj);
-            } else {
-                if (i < 4) createElement('circle', parentElem, 'w', x, y, idi, idj);
-                if (i > 5) createElement('circle', parentElem, 'b', x, y, idi, idj);
+            let div = createCells("black", x, y, idi, idj);
+            let img;
+            if (idi < 4) {
+                img = createChess("svgFiles/chessBlack.svg", "Черная шашка", "b", idi, idj);
+                div.append(img);
             }
+            if (idi > 5) {
+                img = createChess("svgFiles/chessWhite.svg", "Белая шашка", "w", idi, idj);
+                div.append(img);
+            }
+            field.append(div);
             x += 100;
         }
         y += 50;
+
     }
 }
 
-let xStart = 483;
-let yStart = 80;
-buildGameField(SVG_ELEMENT, xStart, yStart, false);
-
+buildGameField();
 

@@ -4,59 +4,13 @@
     <meta charset="UTF-8">
     <title>Checkers</title>
     <link rel="stylesheet" href="checkers.css">
-
+    <script src="libs/jquery-3.2.1.js"></script>
+    <script src="libs/jquery-ui.js"></script>
+    <script src="movement.js"></script>
 </head>
 <body>
-
-<svg stroke="black" fill="yellow" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-        <rect id="field" width="400" height="400" fill="#D6BEA3"/>
-        <rect id="check" width="50" height="50" stroke="black" fill="#838385"/>
-        <symbol id="white">
-            <circle r="20" cx="25" cy="25" fill="white" stroke-width="3" stroke="#black"/>
-            <circle r="15" cx="25" cy="25" fill="white" stroke-width="1" stroke="black"/>
-            <circle r="10" cx="25" cy="25" fill="white" stroke-width="1" stroke="black"/>
-        </symbol>
-        <symbol id="black">
-            <circle r="20" cx="25" cy="25" fill="black" stroke-width="3" stroke="white"/>
-            <circle r="15" cx="25" cy="25" fill="black" stroke-width="1" stroke="white"/>
-            <circle r="10" cx="25" cy="25" fill="black" stroke-width="1" stroke="white"/>
-        </symbol>
-        <symbol id="text">
-            <text x="0" y="50" font-size="35px" text-anchor="start">a</text>
-            <text x="50" y="50" font-size="35px" text-anchor="start">b</text>
-            <text x="100" y="50" font-size="35px" text-anchor="start">c</text>
-            <text x="150" y="50" font-size="35px" text-anchor="start">d</text>
-            <text x="200" y="50" font-size="35px" text-anchor="start">e</text>
-            <text x="250" y="50" font-size="35px" text-anchor="start">f</text>
-            <text x="300" y="50" font-size="35px" text-anchor="start">h</text>
-            <text x="350" y="50" font-size="35px" text-anchor="start">g</text>
-        </symbol>
-        <symbol id="numbers">
-            <text x="50" y="50" font-size="35px" stroke="black" text-anchor="start">1</text>
-            <text x="50" y="100" font-size="35px" stroke="black" text-anchor="start">2</text>
-            <text x="50" y="150" font-size="35px" stroke="black" text-anchor="start">3</text>
-            <text x="50" y="200" font-size="35px" stroke="black" text-anchor="start">4</text>
-            <text x="50" y="250" font-size="35px" stroke="black" text-anchor="start">5</text>
-            <text x="50" y="300" font-size="35px" stroke="black" text-anchor="start">6</text>
-            <text x="50" y="350" font-size="35px" stroke="black" text-anchor="start">7</text>
-            <text x="50" y="400" font-size="35px" stroke="black" text-anchor="start">8</text>
-        </symbol>
-        <symbol id="damsWhite">
-            <circle r="20" cx="25" cy="25" fill="white" stroke-width="3" stroke="black"/>
-            <circle r="5" cx="25" cy="25" fill="gold" stroke="gold"/>
-        </symbol>
-        <symbol id="damsBlack">
-            <circle r="20" cx="25" cy="25" fill="black" stroke-width="3" stroke="white"/>
-            <circle r="5" cx="25" cy="25" fill="gold" stroke="gold"/>
-        </symbol>
-    </defs>
-</svg>
-<script src="libs/jquery-3.2.1.js"></script>
-<script src="libs/jquery-ui.js"></script>
-<script src="movement.js"></script>
 <script src="checkers.js"></script>
-
-
 </body>
 </html>
+
+
