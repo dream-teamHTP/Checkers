@@ -1,11 +1,11 @@
-body{
+body {
     background-color: #04dd8a;
 }
 
-div {
+.checker {
     width: 50px;
     height: 50px;
-    position: relative;
+    position: absolute;
 }
 
 .text {
@@ -18,18 +18,14 @@ div {
     position: absolute;
 }
 
-.black {
+.cell {
+    width: 50px;
+    height: 50px;
     background-color: #969696;
     position: absolute;
 }
 
-div > img {
-    position: absolute;
-    /*top: 10%;*/
-    /*left: 10%;*/
-}
-
-.field {
+.desk {
     width: 400px;
     height: 400px;
     position: relative;
@@ -38,3 +34,8 @@ div > img {
     border: 1px solid black;
     background-color: #c9c9c9;
 }
+
+/*
+TODO На mousedown border: 1px dotted transparent;
+TODO На mouseup border: none
+*/

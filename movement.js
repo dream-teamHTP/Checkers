@@ -59,8 +59,8 @@ function Cells() {
  * @field id - the id of current cell
  * @field checker - current checker in this cell
  */
-function Cell(cell, cellId, offsetLeft, offsetTop) {
-    this.element = $(cell);
+function Cell(div, cellId, offsetLeft, offsetTop) {
+    this.element = $(div);
     this.offsetLeft = offsetLeft;
     this.offsetTop = offsetTop;
     this.id = cellId;
@@ -95,17 +95,17 @@ function Checker(ches, prefix, id, offsetLeft, offsetTop) {
 /**
  * Fires all cells for listeners to drop
  */
-function fillCells(check, coordinateY, coordinateX, offsetLeft, offsetTop) {
+function fillCell(div, offsetLeft, offsetTop, coordinateY, coordinateX) {
     if (!coordinateY || !coordinateX) return;
     let cellId = "" + coordinateY + coordinateX;
-    let cell = cells[cellId] = new Cell(check, cellId, offsetLeft, offsetTop);
+    let cell = cells[cellId] = new Cell(div, cellId, offsetLeft, offsetTop);
     cell.element.droppable(droppableOptions);
 }
 
 /**
  * Fires all checkers for listeners to drag
  */
-function fillCheckers(ches, prefix, coordinateY, coordinateX, offsetLeft, offsetTop) {
+function fillChecker(ches, prefix, offsetLeft, offsetTop, coordinateY, coordinateX) {
     let cellId = "" + coordinateY + coordinateX;
     let checkerId = prefix + coordinateY + coordinateX;
     let checker = cells[cellId].checker = new Checker(ches, prefix, checkerId, offsetLeft, offsetTop);
@@ -121,9 +121,6 @@ function fillCheckers(ches, prefix, coordinateY, coordinateX, offsetLeft, offset
         .mouseup((event) => {
             checker.updateCheckerOffset(event);
             cells.dragChecker = null;
-        })
-        .click((event)=>{
-
         });
 }
 
@@ -132,31 +129,23 @@ function fillCheckers(ches, prefix, coordinateY, coordinateX, offsetLeft, offset
  */
 let draggableOptions = {
     addClasses: false,
-    scope: "cell",
     stop: function (event, ui) {
-        //var a = cells.dragChecker.element.draggable("option");
-        // uses when drag stops
+        // TODO Использовать для проверки попали в контейнер или нет. Если нет, то возвращать шашку на место.
+        console.log("stop: кинули шашку " + event.target.id);
     },
-    drag: (event, ui) => {
-        let checker = cells.dragChecker;
-        checker.offsetLeft = event.clientX - checker.diffLeft;
-        checker.offsetTop = event.clientY - checker.diffTop;
-        checker.element.attr('cy', "" + checker.offsetTop);
-        checker.element.attr('cx', "" + checker.offsetLeft);
-    }
 };
 
 let droppableOptions = {
-    //addClasses: false,
-    accept: (event, ui) => {
-        // doesn't work
+    addClasses: false,
+    accept: (event) => {
+        // TODO Использовать для проверки подходит ли нам квадрат, в который кинули. Работает при драге!!!
+        return true
     },
     drop: function (event, ui) {
-        // doesn't work
+        // TODO Использовать для логиги после успешного перемещения шашки
+        console.log("drop: кинули в квадрат " + event.target.id)
     },
-    classes:{
-        "ui-droppable": "reddd"
-    }
+    classes: {}
 };
 
 /**

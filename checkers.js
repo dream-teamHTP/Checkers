@@ -1,34 +1,64 @@
-'use strict'
+'use strict';
 const text = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
-function createCells(cssClass, x, y, idi, idj) {
-    let div = $("<div>");
-    div.attr('id', "" + idi + idj);
-    div.css({
-        top: `${y}px`,
-        left: `${x}px`
-    });
-    div.addClass(cssClass);
-    return div;
-}
-function createChess(src, alt, chId, idi, idj) {
-    let img = $("<img>");
-    img.attr({
-        "src": `${src}`,
-        "alt": `${alt}`,
-        "position": "absolute",
-        "top": "10%",
-        "left": "10%",
-        "id": `${chId + idi + idj}`
-    });
-    return img;
+buildGameField();
 
+/**
+ * @param top - расстояник от левой стороны поля
+ * @param left - расстояник от левой стороны поля
+ * @param y - координата по оси Y
+ * @param x - координата по оси X
+ */
+function buildGameField() {
+    let body = $("body");
+    let field = createField(body, "desk");
+    let YY = 0;
+    let YX = 0;
+
+    for (let y = 0; y < 8; y++) {
+        createMarkUp(field, "text", y, YX, "-50");
+        createNumeration(field, "text", y, "-50", YY);
+        YX += 50;
+        YY += 50;
+    }
+
+    let top = 0;
+
+    for (let y = 1; y < 9; y++) {
+        let left = 0;
+
+        if (y % 2 === 0) left += 50;
+
+        for (let x = 1; x < 5; x++) {
+            let div = createCell("cell", left, top, y, x);
+            field.append(div);
+            fillCell(div, left, top, y, x);
+
+            let checker;
+
+            if (y < 4) {
+                checker = createChecker("checker", "svgFiles/chessBlack.svg", "Черная шашка", "b", left, top, y, x);
+                field.append(checker);
+                fillChecker(checker, "b", left, top, y, x);
+            } else if (y > 5) {
+                checker = createChecker("checker", "svgFiles/chessWhite.svg", "Белая шашка", "w", left, top, y, x);
+                field.append(checker);
+                fillChecker(checker, "w", left, top, y, x);
+            }
+            left += 100;
+        }
+        top += 50;
+    }
 }
+
 function createField(parrent, cssClass) {
     let div = $('<div>');
     div.addClass(cssClass);
     parrent.prepend(div);
+
+    return div;
 }
+
 function createMarkUp(parrent, cssClass, idi, x, y) {
     let div = $('<div>');
     div.text(text[idi]);
@@ -39,6 +69,7 @@ function createMarkUp(parrent, cssClass, idi, x, y) {
     });
     parrent.append(div);
 }
+
 function createNumeration(parrent, cssClass, idi, x, y) {
     let div = $('<div>');
     div.text(idi + 1);
@@ -50,42 +81,31 @@ function createNumeration(parrent, cssClass, idi, x, y) {
     parrent.append(div);
 }
 
-function buildGameField() {
-    let body = $("body");
-    createField(body, "field");
-    let field = $(".field");
-    let y = 0;
-    let YY = 0;
-    let YX = 0;
-    for (let y = 0; y < 8; y++) {
-        createMarkUp(field, "text", y, YX, "-50");
-        createNumeration(field, "text", y, "-50", YY);
-        YX += 50;
-        YY += 50;
-    }
-    for (let i = 1; i < 9; i++) {
-        let idi = i;
-        let x = 0;
-        if (i % 2 == 0) x += 50;
-        for (let j = 1; j < 5; j++) {
-            let idj = j;
-            let div = createCells("black", x, y, idi, idj);
-            let img;
-            if (idi < 4) {
-                img = createChess("svgFiles/chessBlack.svg", "Черная шашка", "b", idi, idj);
-                div.append(img);
-            }
-            if (idi > 5) {
-                img = createChess("svgFiles/chessWhite.svg", "Белая шашка", "w", idi, idj);
-                div.append(img);
-            }
-            field.append(div);
-            x += 100;
-        }
-        y += 50;
-
-    }
+function createCell(cssClass, left, top, y, x) {
+    let div = $("<div>");
+    div.attr('id', "" + y + x);
+    div.css({
+        top: `${top}px`,
+        left: `${left}px`
+    }).addClass(cssClass);
+    return div;
 }
 
-buildGameField();
+function createChecker(cssClass, src, alt, prefix, left, top, y, x) {
+    let div = $("<div>");
+    div
+        .attr({
+            "id": `${prefix + y + x}`,
+        })
+        .addClass(cssClass)
+        .css({
+            top: `${top}px`,
+            left: `${left}px`
+        });
+    $("<img>").attr({
+        "src": `${src}`,
+        "alt": `${alt}`,
+    }).appendTo(div);
+    return div;
+}
 
