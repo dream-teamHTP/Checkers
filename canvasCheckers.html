@@ -355,11 +355,11 @@
             var checkColor = getCheckerColor(); // цвет шашки где бросили шашку или null, если нет там ничего
             var checkJump = checkJumpOver(); // возвращает 0 - не перепрыгнута клетка или перепрыгнута своя шашка. 1 - перепрыгнута 1 клетка, 2 - простой ход
             var checkDiag = checkDiagonalMove(checkJump); // проверка движения по диоганали
-            var backMove = isBackMove();
+            var backMoveWithoutHit = isBackMoveWithoutHit(checkJump); // вернет true, если ходим назад не дамкой
             //проверяем разрешен ли ход
             // если разрешен, двигаем шашку, если нет-возвращаем ее обратно где взяли
 
-            if (!checkColor && checkDiag && checkJump && !backMove) { // если нет шашки в месте отпуска кнопки мышки и движение по диоганали и перепрыгнута чужая шашка/шашки для дамки
+            if (!checkColor && checkDiag && checkJump && !backMoveWithoutHit) { // если нет шашки в месте отпуска кнопки мышки и движение по диоганали и перепрыгнута чужая шашка/шашки для дамки
                 // создаем новую шашку и добавляем ее в массив, отслеживающий перемещения
                 var newPiece = new Piece(cellCoordinates[0], cellCoordinates[1], checkKingMe(), WHOS_TURN_IS_IT);
                 checkerTracker.push(newPiece);
@@ -390,7 +390,7 @@
         }
 
         // Проверка движения шашки по диоганали
-        function checkDiagonalMove(checkJump) {
+        function checkDiagonalMove() {
             var diagonalMove = true;
 
             if (draggingChecker.king) {
@@ -399,11 +399,11 @@
                 }
             } else {
                 if (WHOS_TURN_IS_IT == BlackCheck) {
-                    if ((isBackMove() && checkJump == 2) || (cellCoordinates[0] == draggingChecker.col) || (cellCoordinates[1] == draggingChecker.row) || (Math.abs(draggingChecker.col - cellCoordinates[0]) > 2) || (Math.abs(draggingChecker.col - cellCoordinates[0]) != Math.abs(draggingChecker.row - cellCoordinates[1]))) {
+                    if ((cellCoordinates[0] == draggingChecker.col) || (cellCoordinates[1] == draggingChecker.row) || (Math.abs(draggingChecker.col - cellCoordinates[0]) > 2) || (Math.abs(draggingChecker.col - cellCoordinates[0]) != Math.abs(draggingChecker.row - cellCoordinates[1]))) {
                         diagonalMove = false;
                     }
                 } else {
-                    if ((isBackMove() && checkJump == 2) || (cellCoordinates[0] == draggingChecker.col) || (cellCoordinates[1] == draggingChecker.row) || (Math.abs(draggingChecker.col - cellCoordinates[0]) > 2) || (Math.abs(draggingChecker.col - cellCoordinates[0]) != Math.abs(draggingChecker.row - cellCoordinates[1]))) {
+                    if ((cellCoordinates[0] == draggingChecker.col) || (cellCoordinates[1] == draggingChecker.row) || (Math.abs(draggingChecker.col - cellCoordinates[0]) > 2) || (Math.abs(draggingChecker.col - cellCoordinates[0]) != Math.abs(draggingChecker.row - cellCoordinates[1]))) {
                         diagonalMove = false;
                     }
                 }
@@ -478,14 +478,19 @@
         }
 
         // Проверяем движение назад обычной шашкой
-        function isBackMove() {
+        function isBackMoveWithoutHit(checkJump) {
             var checkBack = false;
-            if (WHOS_TURN_IS_IT == BlackCheck && cellCoordinates[1] < draggingChecker.row && !draggingChecker.king) {
+            if (WHOS_TURN_IS_IT == BlackCheck && cellCoordinates[1] < draggingChecker.row && !draggingChecker.king && checkJump!=1) {
                 checkBack = true;
-            } else if (WHOS_TURN_IS_IT == WhiteCheck && cellCoordinates[1] > draggingChecker.row && !draggingChecker.king) {
+            } else if (WHOS_TURN_IS_IT == WhiteCheck && cellCoordinates[1] > draggingChecker.row && !draggingChecker.king && checkJump!=1) {
                 checkBack = true;
             }
             return checkBack;
+        }
+
+        function isAnotherToHit() {
+            // TODO Проверка есть ли еще кого бить
+            return false;
         }
 
         function removeChecker() {
@@ -525,10 +530,14 @@
                 newGame();
             } else {
                 //  если никто не победил меняем пользователей местами
+                if(!isAnotherToHit){
+
+
                 if (WHOS_TURN_IS_IT == BlackCheck) {
                     WHOS_TURN_IS_IT = WhiteCheck;
                 } else if (WHOS_TURN_IS_IT == WhiteCheck) {
                     WHOS_TURN_IS_IT = BlackCheck;
+                }
                 }
             }
         }
