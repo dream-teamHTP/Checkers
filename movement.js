@@ -28,6 +28,12 @@ function Cells() {
 
     /** Current drag element */
     this.dragChecker = null;
+    this.turn = "white";
+
+    for (let prop in this){
+        Object.defineProperty(this, prop, {enumerable:false});
+    }
+
 
     /** Sets current checker to the top of all checkers */
     Cells.prototype.setCheckerToTop = function () {
@@ -109,14 +115,21 @@ function fillChecker(ches, prefix, offsetLeft, offsetTop, coordinateY, coordinat
     let cellId = "" + coordinateY + coordinateX;
     let checkerId = prefix + coordinateY + coordinateX;
     let checker = cells[cellId].checker = new Checker(ches, prefix, checkerId, offsetLeft, offsetTop);
-    checker.element.css("cursor", "pointer");
 
     checker.element
         .draggable(draggableOptions)
         .mousedown((event) => {
             checker.setCheckerToTop();
-            checker.updateDiff(event);
-            cells.dragChecker = checker;
+            // TODO Смена игрока. Запрет ходить предыдущему игроку.
+            // TODO Использовать эту логику в onmouseup или droppable drop после успешного опускания шашки.
+            if (checkForTurn(checker.color)){
+                enableDragging(checker.color);
+                checker.updateDiff(event);
+                cells.dragChecker = checker;
+            }else {
+                disableDragging(checker.color);
+            }
+
         })
         .mouseup((event) => {
             checker.updateCheckerOffset(event);
@@ -129,6 +142,10 @@ function fillChecker(ches, prefix, offsetLeft, offsetTop, coordinateY, coordinat
  */
 let draggableOptions = {
     addClasses: false,
+    drag: ()=> {
+
+    },
+    stack: "ui-draggable",
     stop: function (event, ui) {
         // TODO Использовать для проверки попали в контейнер или нет. Если нет, то возвращать шашку на место.
         console.log("stop: кинули шашку " + event.target.id);
@@ -147,6 +164,30 @@ let droppableOptions = {
     },
     classes: {}
 };
+
+function checkForTurn(color) {
+    return color === cells.turn;
+}
+
+function disableDragging(color) {
+    for (let cellName in cells){
+        var cell = cells[cellName];
+        if (cell.checker != null && cell.checker.color === color){
+            if (cell.checker.id === "w84") debugger;
+            console.log(cell.checker.id);
+            cell.checker.element.draggable( "disable" );
+        }
+    }
+}
+
+function enableDragging(color) {
+    for (let cellName in cells){
+        var cell = cells[cellName];
+        if (cell.checker != null && cell.checker.color === color){
+            cell.checker.element.draggable( "enable" );
+        }
+    }
+}
 
 /**
  * Function for creating inheritance
