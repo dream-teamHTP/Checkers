@@ -17,13 +17,13 @@
         var WHOS_TURN_IS_IT = BlackCheck;//кто ходит - задаем черный
 
         // Объявляем массивы для отслеживания местоположений фрагментов
-        var pieceTracker = new Array(); //массив куда складываем перемещения
+        var checkerTracker = new Array(); //массив куда складываем перемещения
         var board;//определяем доску
         var boardContext;//определяем context для canvas
-        var pieceBeingMoved;//определяем перемещенные элементы
+        var draggingChecker;//определяем перемещенные элементы
         var gameInProgress;//определяем состояние игры
-        var cursorLocation = [0,0];//определяем массив расположения курсора
-        var jumpLocation = [0,0];//определяем массив в который пишем ходы
+        var cellCoordinates = [0, 0];//определяем массив расположения курсора
+        var jumpLocation = [0, 0];//определяем массив в который пишем ходы
         var playerOneScore = 0;//задаем счет для первого игрока
         var playerTwoScore = 0;//задаем счет для второго игрока
 
@@ -45,15 +45,15 @@
             scoreCard.innerHTML += "<div id='whosturn'></div>";
 
             // проверяем если local storage поддерживается
-            if(supportsLocalStorage()) {
+            if (supportsLocalStorage()) {
 
                 gameInProgress = localStorage["checkers.game.in.progress"];//gameInProgress  в данном случае это значение хранилища localStorage с ключом checkers.game.in.progress
                 // проверяем идет ли процесс игры
-                if(gameInProgress == "true") {
+                if (gameInProgress == "true") {
                     // восстанавливаем сохраненные переменные
                     playerOneScore = parseInt(localStorage["checkers.player.one.score"]);//Функция parseInt преобразует аргумент в число. аргумент здесь это значение хранилища localStorage с ключом checkers.player.one.score
                     playerTwoScore = parseInt(localStorage["checkers.player.two.score"]);//Функция parseInt преобразует аргумент в число. аргумент здесь это значение хранилища localStorage с ключомcheckers.player.two.score
-                    pieceTracker = JSON.parse(localStorage["checkers.piece.tracker"]);////спарсим значение обратно в объект
+                    checkerTracker = JSON.parse(localStorage["checkers.Piece.tracker"]);////спарсим значение обратно в объект
                     WHOS_TURN_IS_IT = localStorage["checkers.whos.turn.is.it"];
 
                     // отрисовываем сохраненную игру
@@ -70,21 +70,20 @@
             // установка футера
             var footer = document.getElementsByTagName("footer")[0];
             footer.innerHTML = "©2017 DreamTeam";
-            if(BOARD_HEIGHT > browserHeight()) {
+            if (BOARD_HEIGHT > browserHeight()) {
                 footer.style.top = BOARD_HEIGHT + 2 + "px";
             } else {
                 footer.style.bottom = "0px";
             }
         }
 
-        function newGame()
-        {
+        function newGame() {
             // сброс игровых переменных
             WHOS_TURN_IS_IT = WhiteCheck;
-            pieceTracker = new Array();
+            checkerTracker = new Array();
             gameInProgress = true;
-            cursorLocation = [0,0];
-            jumpLocation = [0,0];
+            cellCoordinates = [0, 0];
+            jumpLocation = [0, 0];
             playerOneScore = 0;
             playerTwoScore = 0;
 
@@ -102,28 +101,27 @@
             saveGame();
         }
 
-        function initializePieces()
-        {
+        function initializePieces() {
             // инициализация счетчиков шашек
             var BLACKCounter = 0;
             var WHITECounter = 0;
-            var pieceCounter = 0
+            var pieceCounter = 0;
 
-            for(var j = 1; j < 9; j++) {
-                for(var i = 1; i < 9; i+=2) {
-                    if(j < 4) {
+            for (var j = 1; j < 9; j++) {
+                for (var i = 1; i < 9; i += 2) {
+                    var add = j % 2 === 0 ? 1 : 0;
+                    if (j < 4) {
                         // добавим черные шашки в массив
-                        pieceTracker.push(new piece(i + (j % 2),j,false,BlackCheck));
-                    } else if(j > 5) {
+                        checkerTracker.push(new Piece(i + add, j, false, BlackCheck));
+                    } else if (j > 5) {
                         // добавим белые шашки в массив
-                        pieceTracker.push(new piece(i + (j % 2),j,false,WhiteCheck));
+                        checkerTracker.push(new Piece(i + add, j, false, WhiteCheck));
                     }
                 }
             }
         }
 
-        function piece(x,y,k,c)
-        {
+        function Piece(x, y, k, c) {
             // устанавливаем столбцы, строки, дамки и цвет
             this.col = x;
             this.row = y;
@@ -131,8 +129,7 @@
             this.color = c;
         }
 
-        function drawGame()
-        {
+        function drawGame() {
             // чистим canvas изменяя размер доски
             board.width = BOARD_WIDTH;
             board.height = BOARD_HEIGHT;
@@ -147,10 +144,10 @@
             drawPieces();
 
             // меняем идентификатор начала движения
-            if(WHOS_TURN_IS_IT == BlackCheck) {
+            if (WHOS_TURN_IS_IT == BlackCheck) {
                 document.getElementById("whosturn").innerHTML = "ходят ФИОЛЕТОВЕНЬКИЕ";
                 document.getElementById("whosturn").style.color = WHOS_TURN_IS_IT;
-            } else if(WHOS_TURN_IS_IT == WhiteCheck) {
+            } else if (WHOS_TURN_IS_IT == WhiteCheck) {
                 document.getElementById("whosturn").innerHTML = "ходят РОЗОВЕНЬКИЕ";
                 document.getElementById("whosturn").style.color = WHOS_TURN_IS_IT;
             }
@@ -160,11 +157,12 @@
             document.getElementById("player_two_score").innerHTML = playerTwoScore;
         }
 
-        function positionBoard()
-        {
+        function positionBoard() {
+            var browserWidth = getBrowserWidth();
+
             // установка canvas позиции
-            if((browserWidth() - BOARD_WIDTH) / 2 > 250) {
-                board.style.left = (browserWidth() - BOARD_WIDTH) / 2 + "px";
+            if ((browserWidth - BOARD_WIDTH) / 2 > 250) {
+                board.style.left = (browserWidth - BOARD_WIDTH) / 2 + "px";
                 document.getElementById("score_card").style.width = board.offsetLeft + "px";
             } else {
                 board.style.left = "250px";
@@ -172,64 +170,61 @@
             }
 
             // установка позиции футера
-            if((BOARD_WIDTH + board.offsetLeft) > browserWidth()) {
+            if ((BOARD_WIDTH + board.offsetLeft) > browserWidth) {
                 var footer = document.getElementsByTagName("footer")[0];
                 footer.style.width = 250 + BOARD_WIDTH + 2 + "px";
             } else {
                 var footer = document.getElementsByTagName("footer")[0];
-                if(BOARD_HEIGHT > browserHeight()) {
-                    footer.style.width = browserWidth() - 17 + "px";
+                if (BOARD_HEIGHT > browserHeight()) {
+                    footer.style.width = browserWidth - 17 + "px";
                 } else {
-                    footer.style.width = browserWidth() + "px";
+                    footer.style.width = browserWidth + "px";
                 }
             }
         }
 
-        function drawBoard()
-        {
-            for(var i = 1; i < 9; i++) {
-                for(var j = 1; j < 9; j++) {
+        function drawBoard() {
+            for (var i = 1; i < 9; i++) {
+                for (var j = 1; j < 9; j++) {
                     // отрисовываем клетки используя колонки и строки i и j
-                    drawSquare(i,j);
+                    drawSquare(i, j);
                 }
             }
 
             // устанавливем обработчик события на клик по доске
-            board.addEventListener("mousedown",clickPiece,false);
+            board.addEventListener("mousedown", clickPiece, false);
         }
 
-        function drawSquare(x,y)
-        {
+        function drawSquare(x, y) {
             var color;
 
-            // переключение между черными и белами клетками в зависимости от расположения
-            if(((x % 2 == 0) && (y % 2 == 0)) || ((x % 2 == 1) && (y % 2 == 1))) {
+            // переключение между черными и белыми клетками в зависимости от расположения
+            if (((x % 2 == 0) && (y % 2 == 0)) || ((x % 2 == 1) && (y % 2 == 1))) {
                 color = BLACK;
-            } else if(((x % 2 == 0) && (y % 2 == 1)) || ((x % 2 == 1) && (y % 2 == 0))) {
+            } else if (((x % 2 == 0) && (y % 2 == 1)) || ((x % 2 == 1) && (y % 2 == 0))) {
                 color = WHITE;
             }
 
             // рисуем клетки используя значения колонок и строк, col и row и color
             boardContext.beginPath();
             boardContext.fillStyle = color;
-            boardContext.moveTo((x - 1) * SQUARE_SIZE,(y - 1) * SQUARE_SIZE);
-            boardContext.lineTo(x * SQUARE_SIZE,(y - 1) * SQUARE_SIZE);
-            boardContext.lineTo(x * SQUARE_SIZE,y * SQUARE_SIZE);
-            boardContext.lineTo((x - 1) * SQUARE_SIZE,y * SQUARE_SIZE);
-            boardContext.lineTo((x - 1) * SQUARE_SIZE,(y - 1) * SQUARE_SIZE);
+            boardContext.moveTo((x - 1) * SQUARE_SIZE, (y - 1) * SQUARE_SIZE);
+            boardContext.lineTo(x * SQUARE_SIZE, (y - 1) * SQUARE_SIZE);
+            boardContext.lineTo(x * SQUARE_SIZE, y * SQUARE_SIZE);
+            boardContext.lineTo((x - 1) * SQUARE_SIZE, y * SQUARE_SIZE);
+            boardContext.lineTo((x - 1) * SQUARE_SIZE, (y - 1) * SQUARE_SIZE);
             boardContext.closePath();
             boardContext.fill();
         }
 
-        function drawPieces()
-        {
+        function drawPieces() {
             // отрисовываем шашки в массив
-            for(var i = 0; i < pieceTracker.length; i++) {
+            for (var i = 0; i < checkerTracker.length; i++) {
                 boardContext.beginPath();
-                boardContext.fillStyle = pieceTracker[i].color;
+                boardContext.fillStyle = checkerTracker[i].color;
                 boardContext.lineWidth = 2;
                 boardContext.strokeStyle = BlackCheck;
-                boardContext.arc((pieceTracker[i].col - 1) * SQUARE_SIZE + (SQUARE_SIZE * 0.5) + 0.5,(pieceTracker[i].row - 1) * SQUARE_SIZE + (SQUARE_SIZE * 0.5) + 0.5,(SQUARE_SIZE * 0.5) - 10,0,2 * Math.PI,false);
+                boardContext.arc((checkerTracker[i].col - 1) * SQUARE_SIZE + (SQUARE_SIZE * 0.5) + 0.5, (checkerTracker[i].row - 1) * SQUARE_SIZE + (SQUARE_SIZE * 0.5) + 0.5, (SQUARE_SIZE * 0.5) - 10, 0, 2 * Math.PI, false);
                 boardContext.closePath();
                 boardContext.stroke();
                 boardContext.fill();
@@ -237,104 +232,101 @@
                 boardContext.beginPath();
                 boardContext.lineWidth = 5;
                 boardContext.strokeStyle = "#F0F8FF";
-                boardContext.arc((pieceTracker[i].col - 1) * SQUARE_SIZE + (SQUARE_SIZE * 0.5) + 0.5,(pieceTracker[i].row - 1) * SQUARE_SIZE + (SQUARE_SIZE * 0.5) + 0.5,(SQUARE_SIZE * 0.5) - 15,0,2 * Math.PI,false);
+                boardContext.arc((checkerTracker[i].col - 1) * SQUARE_SIZE + (SQUARE_SIZE * 0.5) + 0.5, (checkerTracker[i].row - 1) * SQUARE_SIZE + (SQUARE_SIZE * 0.5) + 0.5, (SQUARE_SIZE * 0.5) - 15, 0, 2 * Math.PI, false);
                 boardContext.closePath();
                 boardContext.stroke();
                 boardContext.fill();
                 // добавляем дамку если достигли нужной части доски
-                if(pieceTracker[i].king) {
+                if (checkerTracker[i].king) {
                     boardContext.beginPath();
                     boardContext.lineWidth = 10;
                     boardContext.strokeStyle = "#ADFF2F";
-                    boardContext.arc((pieceTracker[i].col - 1) * SQUARE_SIZE + (SQUARE_SIZE * 0.5) + 0.5,(pieceTracker[i].row - 1) * SQUARE_SIZE + (SQUARE_SIZE * 0.5) + 0.5,(SQUARE_SIZE * 0.5) - 20,0,2 * Math.PI,false);
+                    boardContext.arc((checkerTracker[i].col - 1) * SQUARE_SIZE + (SQUARE_SIZE * 0.5) + 0.5, (checkerTracker[i].row - 1) * SQUARE_SIZE + (SQUARE_SIZE * 0.5) + 0.5, (SQUARE_SIZE * 0.5) - 20, 0, 2 * Math.PI, false);
                     boardContext.closePath();
                     boardContext.stroke();
                 }
             }
         }
 
-        function canvasLoc(e)
-        {
-            var canvasLocation = [0,0];
-            var canvasXOffset = document.getElementById("board").offsetLeft;
-            var canvasYOffset = document.getElementById("board").offsetTop;
+        // Расстояние между положением мышки и краями доски (координаты мышки относительно доски)
+        function getMouseDiff(e) {
+            var mouseDiff = [0, 0];
+            var boardXOffset = document.getElementById("board").offsetLeft;
+            var boardYOffset = document.getElementById("board").offsetTop;
 
             // получаем расположение курсорра относительно браузера
             if ((e.pageX != undefined) && (e.pageY != undefined)) {
-                canvasLocation[0] = e.pageX;
-                canvasLocation[1] = e.pageY;
+                mouseDiff[0] = e.pageX;
+                mouseDiff[1] = e.pageY;
             } else {
-                canvasLocation[0] = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-                canvasLocation[1] = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+                mouseDiff[0] = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+                mouseDiff[1] = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
             }
 
-            canvasLocation[0] -= canvasXOffset;
-            canvasLocation[1] -= canvasYOffset;
+            mouseDiff[0] -= boardXOffset; // расстояние между мышкой и левой стороной доски
+            mouseDiff[1] -= boardYOffset; // расстояние между мышкой и верхней стороной доски
 
-            return canvasLocation;
+            return mouseDiff;
         }
 
-        function cursorLoc(e)
-        {
-            var canvasLocation = canvasLoc(e);
+        // Координаты ячейки
+        function getCellCoordinates(e) {
+            var mouseDiff = getMouseDiff(e);
 
             // Получаем расположение курсора относительно квадратов на доске и сохраняем в массиве
-            var cl1 = Math.ceil(canvasLocation[0] * (1 / SQUARE_SIZE));
-            var cl2 = Math.ceil(canvasLocation[1] * (1 / SQUARE_SIZE));
-            cursorLocation = [cl1,cl2];
+            var coordinateX = Math.ceil(mouseDiff[0] * (1 / SQUARE_SIZE)); // координата клетки по Х
+            var coordinateY = Math.ceil(mouseDiff[1] * (1 / SQUARE_SIZE)); // координата клетки по Y
+
+            cellCoordinates = [coordinateX, coordinateY];
         }
 
-        function clickPiece(e)
-        {
+        function clickPiece(e) {
             // Получаем текущее местоположение квадратов
-            cursorLoc(e);
+            getCellCoordinates(e);
 
-
-            var isPiece = checkForPiece();
+            var checkerColor = getCheckerColor();
             // проверяем если на квадрат кликнули занят ли он и какого цвета
             // если при клике пользователь делает ход продолжаем игру
-            if(isPiece == WHOS_TURN_IS_IT) {
+            if (checkerColor == WHOS_TURN_IS_IT) {
                 // удаляем шашку из массива чтобы это выглядело как будто мы ее взяли
-                for(var i = 0; i < pieceTracker.length; i++) {
-                    if((pieceTracker[i].col == cursorLocation[0]) && (pieceTracker[i].row == cursorLocation[1])) {
-                        pieceBeingMoved = pieceTracker[i];
-                        pieceTracker.splice(i,1);
+                for (var i = 0; i < checkerTracker.length; i++) {
+                    if ((checkerTracker[i].col == cellCoordinates[0]) && (checkerTracker[i].row == cellCoordinates[1])) {
+                        draggingChecker = checkerTracker[i];
+                        checkerTracker.splice(i, 1);
                     }
                 }
 
                 // устанавливаем обработчик события  drag and  drop
-                board.addEventListener("mousemove",dragPiece,false);
-                board.addEventListener("mouseup",dropPiece,false);
+                board.addEventListener("mousemove", dragPiece, false);
+                board.addEventListener("mouseup", dropPiece, false);
             }
         }
 
-        function checkForPiece()
-        {
-            // проверяем состояние ли квадрата, есть ли в нем шашка и возвращаем цвет
+        // получаем цвет шашки в точке нажатия или отпуска мышки
+        function getCheckerColor() {
+            var checkerColor = null;
 
-            var pieceColor = null;
-            for(var i = 0; i < pieceTracker.length; i++) {
-                if((pieceTracker[i].col == cursorLocation[0]) && (pieceTracker[i].row == cursorLocation[1])) {
-                    pieceColor = pieceTracker[i].color;
+            for (var i = 0; i < checkerTracker.length; i++) {
+                if ((checkerTracker[i].col == cellCoordinates[0]) && (checkerTracker[i].row == cellCoordinates[1])) {
+                    checkerColor = checkerTracker[i].color;
                 }
             }
 
-            return pieceColor;
+            return checkerColor;
         }
 
-        function dragPiece(e)
-        {
-            // получем расположение курсора
-            cursorLoc(e);
+        // Перерисовываем игру за исключением нашей шашки, т.к. ее нет в массиве.
+        // Нашу шашку рисуем отдельно в месте нахождения
+        function dragPiece(e) {
+
             drawGame();
 
-            // берем шашку и перерисовываем игру пока не отпустим шашку
-            var canvasLocation = canvasLoc(e);
+            var canvasLocation = getMouseDiff(e); // координаты мышки относительно доски
             boardContext.beginPath();
             boardContext.fillStyle = WHOS_TURN_IS_IT;
             boardContext.lineWidth = 2;
             boardContext.strokeStyle = BlackCheck;
-            boardContext.arc(canvasLocation[0],canvasLocation[1],(SQUARE_SIZE * 0.5) - 10,0,2 * Math.PI,false);
+            boardContext.arc(canvasLocation[0], canvasLocation[1], (SQUARE_SIZE * 0.5) - 10, 0, 2 * Math.PI, false);
             boardContext.closePath();
             boardContext.stroke();
             boardContext.fill();
@@ -343,39 +335,38 @@
             boardContext.fillStyle = WHOS_TURN_IS_IT;
             boardContext.lineWidth = 5;
             boardContext.strokeStyle = "#F0F8FF";
-            boardContext.arc(canvasLocation[0],canvasLocation[1],(SQUARE_SIZE * 0.5) - 15,0,2 * Math.PI,false);
+            boardContext.arc(canvasLocation[0], canvasLocation[1], (SQUARE_SIZE * 0.5) - 15, 0, 2 * Math.PI, false);
             boardContext.closePath();
             boardContext.stroke();
             boardContext.fill();
             //превращаем шашку в дамку
-            if(pieceBeingMoved.king) {
+            if (draggingChecker.king) {
                 boardContext.beginPath();
                 boardContext.lineWidth = 10;
                 boardContext.strokeStyle = "#ADFF2F";
-                boardContext.arc(canvasLocation[0],canvasLocation[1],(SQUARE_SIZE * 0.5) - 20,0,2 * Math.PI,false);
+                boardContext.arc(canvasLocation[0], canvasLocation[1], (SQUARE_SIZE * 0.5) - 20, 0, 2 * Math.PI, false);
                 boardContext.closePath();
                 boardContext.stroke();
             }
         }
 
-        function dropPiece(e)
-        {
-            // получаем местонахождение курсора и получаем легальный статус
-            cursorLoc(e);
-            var checkPiece = checkForPiece();
-            var checkDiag = checkDiagonalMove();
-            var checkJump = checkJumpOver();
+        function dropPiece(e) {
+            getCellCoordinates(e); // координаты ячейки где бросили шашку
+            var checkColor = getCheckerColor(); // цвет шашки где бросили шашку или null, если нет там ничего
+            var checkJump = checkJumpOver(); // возвращает 0 - не перепрыгнута клетка или перепрыгнута своя шашка. 1 - перепрыгнута 1 клетка, 2 - простой ход
+            var checkDiag = checkDiagonalMove(checkJump); // проверка движения по диоганали
+            var backMove = isBackMove();
             //проверяем разрешен ли ход
             // если разрешен, двигаем шашку, если нет-возвращаем ее обратно где взяли
 
-            if(!checkPiece && checkDiag && checkJump) {
+            if (!checkColor && checkDiag && checkJump && !backMove) { // если нет шашки в месте отпуска кнопки мышки и движение по диоганали и перепрыгнута чужая шашка/шашки для дамки
                 // создаем новую шашку и добавляем ее в массив, отслеживающий перемещения
-                var newPiece = new piece(cursorLocation[0],cursorLocation[1],checkKingMe(),WHOS_TURN_IS_IT);
-                pieceTracker.push(newPiece);
+                var newPiece = new Piece(cellCoordinates[0], cellCoordinates[1], checkKingMe(), WHOS_TURN_IS_IT);
+                checkerTracker.push(newPiece);
                 // если шашка перепрыгивает шашку противника добавляем очко победителю
 
-                if(checkJump == 1) {
-                    removePiece();
+                if (checkJump == 1) {
+                    removeChecker();
                 }
 
                 // проверяем на победу
@@ -383,38 +374,36 @@
                 checkForWin();
             } else {
                 // если ход запрещен возвращаем шашку обратно
-                pieceTracker.push(pieceBeingMoved);
+                checkerTracker.push(draggingChecker);
             }
 
             // сохраняем текущее состояние игры
             saveGame();
 
             // удаляем обработчики событий и перерисовываем доску
-            board.removeEventListener("mousemove",dragPiece,false);
-            board.removeEventListener("mouseup",dropPiece,false);
+            board.removeEventListener("mousemove", dragPiece, false);
+            board.removeEventListener("mouseup", dropPiece, false);
             drawGame();
 
             // устанавливаем отметку перемещаемой шашки false
-            pieceBeingMoved = false;
+            draggingChecker = false;
         }
 
-        function checkDiagonalMove()
-        {
+        // Проверка движения шашки по диоганали
+        function checkDiagonalMove(checkJump) {
             var diagonalMove = true;
 
-            // если шашка стала дамкой применяем другие ограничения
-
-            if(pieceBeingMoved.king) {
-                if((cursorLocation[0] == pieceBeingMoved.col) || (cursorLocation[1] == pieceBeingMoved.row) || (Math.abs(pieceBeingMoved.col - cursorLocation[0]) != Math.abs(pieceBeingMoved.row - cursorLocation[1]))) {
+            if (draggingChecker.king) {
+                if ((cellCoordinates[0] == draggingChecker.col) || (cellCoordinates[1] == draggingChecker.row) || (Math.abs(draggingChecker.col - cellCoordinates[0]) != Math.abs(draggingChecker.row - cellCoordinates[1]))) {
                     diagonalMove = false;
                 }
             } else {
-                if(WHOS_TURN_IS_IT == BlackCheck) {
-                    if((cursorLocation[0] == pieceBeingMoved.col) || (cursorLocation[1] <= pieceBeingMoved.row) || (Math.abs(pieceBeingMoved.col - cursorLocation[0]) > 2) || (Math.abs(pieceBeingMoved.col - cursorLocation[0]) != Math.abs(pieceBeingMoved.row - cursorLocation[1]))) {
+                if (WHOS_TURN_IS_IT == BlackCheck) {
+                    if ((isBackMove() && checkJump == 2) || (cellCoordinates[0] == draggingChecker.col) || (cellCoordinates[1] == draggingChecker.row) || (Math.abs(draggingChecker.col - cellCoordinates[0]) > 2) || (Math.abs(draggingChecker.col - cellCoordinates[0]) != Math.abs(draggingChecker.row - cellCoordinates[1]))) {
                         diagonalMove = false;
                     }
                 } else {
-                    if((cursorLocation[0] == pieceBeingMoved.col) || (cursorLocation[1] >= pieceBeingMoved.row) || (Math.abs(pieceBeingMoved.col - cursorLocation[0]) > 2) || (Math.abs(pieceBeingMoved.col - cursorLocation[0]) != Math.abs(pieceBeingMoved.row - cursorLocation[1]))) {
+                    if ((isBackMove() && checkJump == 2) || (cellCoordinates[0] == draggingChecker.col) || (cellCoordinates[1] == draggingChecker.row) || (Math.abs(draggingChecker.col - cellCoordinates[0]) > 2) || (Math.abs(draggingChecker.col - cellCoordinates[0]) != Math.abs(draggingChecker.row - cellCoordinates[1]))) {
                         diagonalMove = false;
                     }
                 }
@@ -423,64 +412,60 @@
             return diagonalMove;
         }
 
-        function checkJumpOver()
-        {
+        function checkJumpOver() {
             var jumpOver = 0;
-            // если шашка стала дамкой применяем другие условия
 
-            if(pieceBeingMoved.king) {
+            if (draggingChecker.king) {
                 // получаем столбцы и строки отличные от начальных для шашки при drop позиции
-                var colDifference = pieceBeingMoved.col - cursorLocation[0];
-                var rowDifference = pieceBeingMoved.row - cursorLocation[1];
-                var colTemp = pieceBeingMoved.col;
-                var rowTemp = pieceBeingMoved.row;
-                var pieceCounter = 0;
-                var colorMatch = 0;
+                var colDifference = draggingChecker.col - cellCoordinates[0]; // разница по X (начальная - конечная)
+                var rowDifference = draggingChecker.row - cellCoordinates[1]; // разница по Y (начальная - конечная)
+                var colTemp = draggingChecker.col; // начальная X
+                var rowTemp = draggingChecker.row; // начальная Y
+                var pieceCounter = 0; // количество несовпавших шашек
+                var colorMatch = 0; // количество совпавших шашек
 
                 // проверка клеток, которые были перепрыгнуты и наличие шашек противника в них
-                for(var i = 0; i < Math.abs(colDifference); i++) {
+                for (var i = 0; i < Math.abs(colDifference); i++) {
                     // получение клеток, которые были перепрыгнуты
-                    colTemp -= colDifference/Math.abs(colDifference);
-                    rowTemp -= rowDifference/Math.abs(rowDifference);
+                    colTemp -= colDifference / Math.abs(colDifference); // координата следующей клетки по движению (начальная X - разница по X / [разница по X])
+                    rowTemp -= rowDifference / Math.abs(rowDifference); // координата следующей клетки по движению (начальная Y - разница по Y / [разница по Y])
 
                     // проверка позиций на наличие шашек и определение их цвета
-
-                    for(var j = 0; j < pieceTracker.length; j++) {
-                        if((pieceTracker[j].col == colTemp) && (pieceTracker[j].row == rowTemp)) {
-                            if(pieceTracker[j].color == pieceBeingMoved.color) {
+                    for (var j = 0; j < checkerTracker.length; j++) {
+                        if ((checkerTracker[j].col == colTemp) && (checkerTracker[j].row == rowTemp)) { // если есть шашка
+                            if (checkerTracker[j].color == draggingChecker.color) { // совпадение цвета шашки в проверяемой ячейке с цветом шашки, которую переместили
                                 colorMatch++;
                             } else {
-                                jumpLocation[0] = pieceTracker[j].col;
-                                jumpLocation[1] = pieceTracker[j].row;
+                                jumpLocation[0] = checkerTracker[j].col; // помещаем координату не совпавшей шашки
+                                jumpLocation[1] = checkerTracker[j].row; // помещаем координату не совпавшей шашки
                                 pieceCounter++;
                             }
                         }
                     }
                 }
 
-                // установка значения flag на место куда прыгнула шашка
-                if(pieceCounter == 0 && colorMatch == 0) {
+                if (pieceCounter == 0 && colorMatch == 0) { //простой ход если не было шашек
                     jumpOver = 2;
-                } else if(pieceCounter == 1 && colorMatch == 0) {
-                    jumpOver = 1;
+                } else if (pieceCounter == 1 && colorMatch == 0) {
+                    jumpOver = 1; // если была 1 другого цвета и ее перепрыгнули
                 }
             } else {
-                if((Math.abs(pieceBeingMoved.col - cursorLocation[0]) == 2 ) && (Math.abs(pieceBeingMoved.row - cursorLocation[1]) == 2)) {
+                if ((Math.abs(draggingChecker.col - cellCoordinates[0]) == 2 ) && (Math.abs(draggingChecker.row - cellCoordinates[1]) == 2)) { // прыжок через 1 клетку
                     // получение значений столбца и строки перепрыгнутой клетки
-                    if(pieceBeingMoved.col - cursorLocation[0] > 0) {
-                        jumpLocation[0] = pieceBeingMoved.col - 1;
-                    } else {
-                        jumpLocation[0] = pieceBeingMoved.col + 1;
+                    if (draggingChecker.col - cellCoordinates[0] > 0) { // движение влево
+                        jumpLocation[0] = draggingChecker.col - 1; // на клетку назад
+                    } else { // движение вправо
+                        jumpLocation[0] = draggingChecker.col + 1; // на клетку вперед
                     }
-                    if(pieceBeingMoved.row - cursorLocation[1] < 0) {
-                        jumpLocation[1] = pieceBeingMoved.row + 1;
-                    } else {
-                        jumpLocation[1] = pieceBeingMoved.row - 1;
+                    if (draggingChecker.row - cellCoordinates[1] < 0) { // движение вниз
+                        jumpLocation[1] = draggingChecker.row + 1; // на клетку ниже
+                    } else { // движение вверх
+                        jumpLocation[1] = draggingChecker.row - 1; // на клетку выше
                     }
 
                     // проверка содержит ли клетка шашку и каков ее цвет
-                    for(var i = 0; i < pieceTracker.length; i++) {
-                        if((pieceTracker[i].col == jumpLocation[0]) && (pieceTracker[i].row == jumpLocation[1]) && (pieceTracker[i].color != pieceBeingMoved.color)) {
+                    for (var i = 0; i < checkerTracker.length; i++) {
+                        if ((checkerTracker[i].col == jumpLocation[0]) && (checkerTracker[i].row == jumpLocation[1]) && (checkerTracker[i].color != draggingChecker.color)) {
                             jumpOver = 1;
                         }
                     }
@@ -492,35 +477,44 @@
             return jumpOver;
         }
 
-        function removePiece()
-        {
-            // удаление перемещенной шашки из массива передвижений
-            for(var i = 0; i < pieceTracker.length; i++) {
-                if((pieceTracker[i].col == jumpLocation[0]) && (pieceTracker[i].row == jumpLocation[1])) {
+        // Проверяем движение назад обычной шашкой
+        function isBackMove() {
+            var checkBack = false;
+            if (WHOS_TURN_IS_IT == BlackCheck && cellCoordinates[1] < draggingChecker.row && !draggingChecker.king) {
+                checkBack = true;
+            } else if (WHOS_TURN_IS_IT == WhiteCheck && cellCoordinates[1] > draggingChecker.row && !draggingChecker.king) {
+                checkBack = true;
+            }
+            return checkBack;
+        }
 
-                    if(pieceTracker[i].color == BlackCheck) {
+        function removeChecker() {
+            // удаление перемещенной шашки из массива передвижений
+            for (var i = 0; i < checkerTracker.length; i++) {
+                if ((checkerTracker[i].col == jumpLocation[0]) && (checkerTracker[i].row == jumpLocation[1])) {
+
+                    if (checkerTracker[i].color == BlackCheck) {
                         playerTwoScore += 1;
                     } else {
                         playerOneScore += 1;
                     }
 
                     // удаление шашки
-                    pieceTracker.splice(i,1);
+                    checkerTracker.splice(i, 1);
                 }
             }
         }
 
-        function checkForWin()
-        {
+        function checkForWin() {
             // проверка на победителя
-            if((playerOneScore == 12) || (playerTwoScore == 12)) {
+            if ((playerOneScore == 12) || (playerTwoScore == 12)) {
                 //устанавливаем победителя
                 var winner = (playerOneScore == 12) ? "первый игруля" : "второй игруля";
 
                 // удаляем обработчики событий и перерисовываем доску
-                board.removeEventListener("mousedown",clickPiece,false);
-                board.removeEventListener("mousemove",dragPiece,false);
-                board.removeEventListener("mouseup",dropPiece,false);
+                board.removeEventListener("mousedown", clickPiece, false);
+                board.removeEventListener("mousemove", dragPiece, false);
+                board.removeEventListener("mouseup", dropPiece, false);
                 drawGame();
 
                 // сбрасываем gameInProgress flag
@@ -531,44 +525,41 @@
                 newGame();
             } else {
                 //  если никто не победил меняем пользователей местами
-                if(WHOS_TURN_IS_IT == BlackCheck) {
+                if (WHOS_TURN_IS_IT == BlackCheck) {
                     WHOS_TURN_IS_IT = WhiteCheck;
-                } else if(WHOS_TURN_IS_IT == WhiteCheck) {
+                } else if (WHOS_TURN_IS_IT == WhiteCheck) {
                     WHOS_TURN_IS_IT = BlackCheck;
                 }
             }
         }
 
-        function saveGame()
-        {
+        function saveGame() {
             // проверяем поддерживает ли браузер local storage и сохраняем текущее состояние игры
             if (supportsLocalStorage()) {
                 localStorage["checkers.game.in.progress"] = gameInProgress;
                 localStorage["checkers.player.one.score"] = playerOneScore;
                 localStorage["checkers.player.two.score"] = playerTwoScore;
-                localStorage["checkers.piece.tracker"] = JSON.stringify(pieceTracker);
+                localStorage["checkers.Piece.tracker"] = JSON.stringify(checkerTracker);
                 localStorage["checkers.whos.turn.is.it"] = WHOS_TURN_IS_IT;
             }
         }
 
-        function checkKingMe()
-        {
+        function checkKingMe() {
             var kingMe = false;
             // проверяем если черные или белые шашки достигли другоо конца доски или уже являются дамками
 
-            if((pieceBeingMoved.color == BlackCheck) && (cursorLocation[1] == 8)) {
+            if ((draggingChecker.color == BlackCheck) && (cellCoordinates[1] == 8)) {
                 kingMe = true;
-            } else if((pieceBeingMoved.color == WhiteCheck) && (cursorLocation[1] == 1)) {
+            } else if ((draggingChecker.color == WhiteCheck) && (cellCoordinates[1] == 1)) {
                 kingMe = true;
-            } else if(pieceBeingMoved.king) {
+            } else if (draggingChecker.king) {
                 kingMe = true;
             }
 
             return kingMe;
         }
 
-        function restartGame()
-        {
+        function restartGame() {
             newGame();
 
         }
@@ -579,8 +570,7 @@
             return localStorageSupport;
         }
 
-        function browserHeight()
-        {
+        function browserHeight() {
             var height;
             // определяем высоту окна браузера
 
@@ -595,8 +585,7 @@
             return height;
         }
 
-        function browserWidth()
-        {
+        function getBrowserWidth() {
             var width;
             // определяем ширину окна браузера
 
@@ -617,58 +606,57 @@
 
 
         footer {
-            background-color:#000000;
-            position:absolute;
-            left:0px;
-            height:25px;
+            background-color: #000000;
+            position: absolute;
+            left: 0px;
+            height: 25px;
             color: #ddf;
-            text-align:center;
-            font-weight:bold;
-            font-size:18px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
         }
 
         #board {
-            border:1px solid BLACK;
-            position:absolute;
-            top:0px;
+            border: 1px solid BLACK;
+            position: absolute;
+            top: 0px;
             box-shadow: 0 0 5em .5em rgba(120, 120, 233, 0.774);
         }
 
         #score_card {
-            position:absolute;
-            left:0px;
-            top:0px;
+            position: absolute;
+            left: 0px;
+            top: 0px;
 
         }
 
-
         .player {
-            border:2px solid  #ddf;
-            border-radius:10px;
-            margin:5px;
-            padding:5px;
-            text-align:center;
-            font-weight:bold;
-            font-size:18px;
+            border: 2px solid #ddf;
+            border-radius: 10px;
+            margin: 5px;
+            padding: 5px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
         }
 
         #whosturn {
-            border:2px solid  #ddf;
-            border-radius:10px;
-            margin:5px;
-            padding:5px;
-            text-align:center;
-            font-weight:bold;
-            font-size:18px;
+            border: 2px solid #ddf;
+            border-radius: 10px;
+            margin: 5px;
+            padding: 5px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
             text-decoration-color: BLACK;
         }
 
         #no_html5 {
-            color:WHITE;
-            font-size:larger;
+            color: WHITE;
+            font-size: larger;
         }
 
-        html, body{
+        html, body {
             margin: 0;
             padding: 0;
             color: #ddf;
@@ -682,38 +670,34 @@
         #restart_game::after,
         #restart_game span,
         #restart_game span::before,
-        #restart_game span::after
-        {
+        #restart_game span::after {
             transition: all ease .5s;
         }
 
-        #restart_game{
+        #restart_game {
             position: relative;
             display: inline-block;
             padding: 0.3em;
             margin: 1em;
             box-shadow: 3px 3px 2px #888;
-            font-weight:bold;
-            font-size:18px;
+            font-weight: bold;
+            font-size: 18px;
             border: solid 1px;
             text-transform: uppercase;
             cursor: pointer;
         }
 
-        #restart_game:hover
-        {
-            box-shadow: 0 0 5em .5em rgba(50,50,150,0.5);
+        #restart_game:hover {
+            box-shadow: 0 0 5em .5em rgba(50, 50, 150, 0.5);
         }
 
-        #restart_game span
-        {
+        #restart_game span {
             display: inline-block;
             width: 100%;
             padding: 0.6em 2em;
         }
 
-        #restart_game:hover span
-        {
+        #restart_game:hover span {
             background-color: #ddf;
             color: #112;
         }
@@ -721,21 +705,19 @@
         #restart_game::before,
         #restart_game::after,
         #restart_game span::before,
-        #restart_game span::after
-        {
+        #restart_game span::after {
             content: '';
             position: absolute;
             border: 1px;
         }
 
         #restart_game::before,
-        #restart_game span::before
-        {
+        #restart_game span::before {
             border-style: solid none;
         }
 
         #restart_game::before,
-        #restart_game span::after{
+        #restart_game span::after {
             left: 0;
             top: -0.4em;
             width: 100%;
@@ -743,14 +725,12 @@
         }
 
         #restart_game::after,
-        #restart_game span::after
-        {
+        #restart_game span::after {
             border-style: none solid;
         }
 
         #restart_game::after,
-        #restart_game span::before
-        {
+        #restart_game span::before {
             top: 0;
             left: -0.4em;
             height: 100%;
@@ -758,20 +738,17 @@
         }
 
         #restart_game:hover::after,
-        #restart_game:hover span::after
-        {
+        #restart_game:hover span::after {
             transform: scaleY(0);
         }
 
         #restart_game:hover::before,
-        #restart_game:hover span::before
-        {
+        #restart_game:hover span::before {
             transform: scaleX(0);
         }
 
         #restart_game:hover span::after,
-        #restart_game:hover span::before
-        {
+        #restart_game:hover span::before {
             opacity: 0;
         }
 
