@@ -354,12 +354,13 @@
             getCellCoordinates(e); // координаты ячейки где бросили шашку
             var checkColor = getCheckerColor(); // цвет шашки где бросили шашку или null, если нет там ничего
             var checkJump = checkJumpOver(); // возвращает 0 - не перепрыгнута клетка или перепрыгнута своя шашка. 1 - перепрыгнута 1 клетка, 2 - простой ход
-            var checkDiag = checkDiagonalMove(checkJump); // проверка движения по диоганали
+            var checkDiag = checkDiagonalMove(); // проверка движения по диоганали
             var backMoveWithoutHit = isBackMoveWithoutHit(checkJump); // вернет true, если ходим назад не дамкой
+            var necessaryToHit = isNecessaryToHit();
             //проверяем разрешен ли ход
             // если разрешен, двигаем шашку, если нет-возвращаем ее обратно где взяли
 
-            if (!checkColor && checkDiag && checkJump && !backMoveWithoutHit) { // если нет шашки в месте отпуска кнопки мышки и движение по диоганали и перепрыгнута чужая шашка/шашки для дамки
+            if (!checkColor && checkDiag && checkJump && !backMoveWithoutHit && !necessaryToHit) { // если (нет шашки в месте отпуска кнопки мышки) и (движение по диоганали) и (была перепрыгнута чужая шашка или простой ход) и (нет движения назад, когда был сделан простой ход) и (не обязательно бить))
                 // создаем новую шашку и добавляем ее в массив, отслеживающий перемещения
                 var newPiece = new Piece(cellCoordinates[0], cellCoordinates[1], checkKingMe(), WHOS_TURN_IS_IT);
                 checkerTracker.push(newPiece);
@@ -369,9 +370,9 @@
                     removeChecker();
                 }
 
-                // проверяем на победу
+                // проверяем есть ли еще ходы этого игрока, другого игрока или выйгрыш
 
-                checkForWin();
+                checkNextTurn(checkJump);
             } else {
                 // если ход запрещен возвращаем шашку обратно
                 checkerTracker.push(draggingChecker);
@@ -450,7 +451,7 @@
                     jumpOver = 1; // если была 1 другого цвета и ее перепрыгнули
                 }
             } else {
-                if ((Math.abs(draggingChecker.col - cellCoordinates[0]) == 2 ) && (Math.abs(draggingChecker.row - cellCoordinates[1]) == 2)) { // прыжок через 1 клетку
+                if ((Math.abs(draggingChecker.col - cellCoordinates[0]) == 2) && (Math.abs(draggingChecker.row - cellCoordinates[1]) == 2)) { // прыжок через 1 клетку
                     // получение значений столбца и строки перепрыгнутой клетки
                     if (draggingChecker.col - cellCoordinates[0] > 0) { // движение влево
                         jumpLocation[0] = draggingChecker.col - 1; // на клетку назад
@@ -463,7 +464,7 @@
                         jumpLocation[1] = draggingChecker.row - 1; // на клетку выше
                     }
 
-                    // проверка содержит ли клетка шашку и каков ее цвет
+                    // проверка содержит ли в клетке шашку и каков ее цвет
                     for (var i = 0; i < checkerTracker.length; i++) {
                         if ((checkerTracker[i].col == jumpLocation[0]) && (checkerTracker[i].row == jumpLocation[1]) && (checkerTracker[i].color != draggingChecker.color)) {
                             jumpOver = 1;
@@ -488,8 +489,53 @@
             return checkBack;
         }
 
-        // TODO Проверка, есть ли еще шашки, что бил этот игрок
-        function isAnotherToHit() {
+        // Проверка, есть ли еще шашки, что бил этот игрок
+        function isAnotherCheckerToHit() {
+            var anotherToHit = false;
+            for (var i = 1; i <= 2; i++) {
+                for (var j = 1; j <= 2; j++) {
+                    var x = i % 2 === 0 ? 1 : -1;
+                    var y = j % 2 === 0 ? 1 : -1;
+                    var colTemp = cellCoordinates[0] + x;
+                    var rowTemp = cellCoordinates[1] + y;
+                    var siblingChecker; // Соседняя шашка
+                    // если есть шашка на соседней клетке и она другого цвета, нужно проверить ее соседей на предмет пустой клетки
+                    for (var k = 0; k < checkerTracker.length; k++) {
+                        if (checkerTracker[k].col == colTemp && checkerTracker[k].row == rowTemp && checkerTracker[k].color != WHOS_TURN_IS_IT) {
+                            siblingChecker = checkerTracker[k];
+                            var anotherToHit = checkFreeCell(colTemp + x, rowTemp + y);
+                            if (anotherToHit) {
+                                break;
+                            }
+                        }
+                    }
+                    if (anotherToHit) {
+                        break;
+                    }
+                }
+                if (anotherToHit) {
+                    break;
+                }
+            }
+
+            return anotherToHit;
+        }
+
+        // Проверяем соседнюю по движению пустую клетку
+        function checkFreeCell(colTemp, rowTemp) {
+            for (var i = 0; i < checkerTracker.length; k++) {
+                if (checkerTracker[i].col != colTemp && checkerTracker[i].row != rowTemp) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // TODO Проверка клетки с которой стартуем, есть ли рядом другого цвета шашки и за ними пустое место (Обязательно бить)
+        function isNecessaryToHit() {
+            // TODO Вернуть true, если есть хоть 1 чужая шашка рядом и есть место, куда бить.
+            // TODO Поменять логику из isAnotherCheckerToHit для поля старта. Сделать 1 функцию.
+            // TODO Если necessaryToHit, то передать поле старта. Если isAnotherCheckerToHit - то поредавать поле установки шашки.
             return false;
         }
 
@@ -510,7 +556,7 @@
             }
         }
 
-        function checkForWin() {
+        function checkNextTurn(checkJump) {
             // проверка на победителя
             if ((playerOneScore == 12) || (playerTwoScore == 12)) {
                 //устанавливаем победителя
@@ -529,8 +575,8 @@
                 alert("Победил" + winner + "!");
                 newGame();
             } else {
-                //  если никто не победил меняем пользователей местами
-                if (!isAnotherToHit()) {
+                //  если игра не закончена
+                if ((checkJump === 1 && !isAnotherCheckerToHit()) || checkJump !== 1) {
                     if (WHOS_TURN_IS_IT == BlackCheck) {
                         WHOS_TURN_IS_IT = WhiteCheck;
                     } else if (WHOS_TURN_IS_IT == WhiteCheck) {
