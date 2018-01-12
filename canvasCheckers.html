@@ -530,11 +530,15 @@
 
         // Проверяем соседнюю по движению пустую клетку
         function checkFreeCell(colTemp, rowTemp) {
+            if (colTemp < 1 || colTemp > 8 || rowTemp < 1 || rowTemp > 8) {
+                return false;
+            }
             for (var i = 0; i < checkerTracker.length; i++) {
                 if (checkerTracker[i].col == colTemp && checkerTracker[i].row == rowTemp) {
                     return false;
                 }
             }
+
             return [colTemp, colTemp];
         }
 
