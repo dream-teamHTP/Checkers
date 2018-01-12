@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Checkers</title>
+    <link rel="stylesheet" href="contacts.css"/>
     <script>
 
         //определяем константы
@@ -359,7 +360,7 @@
             //проверяем разрешен ли ход
             // если разрешен, двигаем шашку, если нет-возвращаем ее обратно где взяли
 
-            if (!checkColor && checkDiag && checkJump && !backMoveWithoutHit && (approvedAction || checkJump ==1)) { // если (нет шашки в месте отпуска кнопки мышки) и (движение по диоганали) и (была перепрыгнута чужая шашка или простой ход) и (нет движения назад, когда был сделан простой ход) и (не обязательно бить))
+            if (!checkColor && checkDiag && checkJump && !backMoveWithoutHit && (approvedAction || checkJump == 1)) { // если (нет шашки в месте отпуска кнопки мышки) и (движение по диоганали) и (была перепрыгнута чужая шашка или простой ход) и (нет движения назад, когда был сделан простой ход) и (не обязательно бить))
                 // создаем новую шашку и добавляем ее в массив, отслеживающий перемещения
                 var newPiece = new Piece(cellCoordinates[0], cellCoordinates[1], checkKingMe(), WHOS_TURN_IS_IT);
                 checkerTracker.push(newPiece);
@@ -552,7 +553,7 @@
                 var freeCell = isAnotherCheckerToHit(sortedCoordinates[j]);
 
                 if ((freeCell && freeCell[0] != cellCoordinates[0] && freeCell[1] != cellCoordinates[1])) {
-                    isTrue= false;
+                    isTrue = false;
                 }
             }
 
