@@ -11,9 +11,8 @@
         var BOARD_HEIGHT = SQUARE_SIZE * 8;//высота доски
         var BLACK = "#000000"; //цвет черных клеток
         var WHITE = "#F5FFFA";//цвет белых клеток
-        var BlackCheck = "#4B0082"; //определяем черные шашки
+        var BlackCheck = "#0000FF"; //определяем черные шашки
         var WhiteCheck = "#FF00FF";//определяем белые шашки
-
         var WHOS_TURN_IS_IT = BlackCheck;//кто ходит - задаем черный
 
         // Объявляем массивы для отслеживания местоположений фрагментов
@@ -36,11 +35,11 @@
             // сбрасывем счет
             var scoreCard = document.getElementById("score_card");
             //вставляем кнопку начала игры
-            scoreCard.innerHTML = "<div id='restart_game' onclick='restartGame(); return false;'>НАЧНЕМ ИГРАТЬ</div>";
+            scoreCard.innerHTML = "<div id='restart_game' onclick='restartGame(); return false;'>ПАЧЫНАЕМ ГУЛЬНЮ</div>";
             //вставляем параметры счет первого игрока
-            scoreCard.innerHTML += "<div id='player_one' class='player'>Счет первого игрули: <span id='player_one_score'></span></div>";
+            scoreCard.innerHTML += "<div id='player_one' class='player'>Вынік першага гульца: <span id='player_one_score'></span></div>";
             //вставляем параметры счет второго игрока
-            scoreCard.innerHTML += "<div id='player_two' class='player'>Счет второго игрули: <span id='player_two_score'></span></div>";
+            scoreCard.innerHTML += "<div id='player_two' class='player'>Вынік другога гульца: <span id='player_two_score'></span></div>";
             //информируем кто должен сделать ход
             scoreCard.innerHTML += "<div id='whosturn'></div>";
 
@@ -145,10 +144,10 @@
 
             // меняем идентификатор начала движения
             if (WHOS_TURN_IS_IT == BlackCheck) {
-                document.getElementById("whosturn").innerHTML = "ходят ФИОЛЕТОВЕНЬКИЕ";
+                document.getElementById("whosturn").innerHTML = "ходзяць сінія";
                 document.getElementById("whosturn").style.color = WHOS_TURN_IS_IT;
             } else if (WHOS_TURN_IS_IT == WhiteCheck) {
-                document.getElementById("whosturn").innerHTML = "ходят РОЗОВЕНЬКИЕ";
+                document.getElementById("whosturn").innerHTML = "ходзяць ружовыя";
                 document.getElementById("whosturn").style.color = WHOS_TURN_IS_IT;
             }
 
@@ -581,8 +580,7 @@
             // проверка на победителя
             if ((playerOneScore == 12) || (playerTwoScore == 12)) {
                 //устанавливаем победителя
-                var winner = (playerOneScore == 12) ? "первый игруля" : "второй игруля";
-
+                var winner = (playerOneScore == 12) ? "першы гулец" : "другi гулец";
                 // удаляем обработчики событий и перерисовываем доску
                 board.removeEventListener("mousedown", clickPiece, false);
                 board.removeEventListener("mousemove", dragPiece, false);
@@ -593,7 +591,7 @@
                 gameInProgress = false;
 
                 // обьявляем пользователя победителем и начинаем игру заново
-                alert("Победил" + winner + "!");
+                alert("Пераможца" + winner + "!");
                 newGame();
             } else {
                 //  если игра не закончена
