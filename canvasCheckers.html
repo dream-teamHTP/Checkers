@@ -356,11 +356,11 @@
             var checkJump = checkJumpOver(); // возвращает 0 - не перепрыгнута клетка или перепрыгнута своя шашка. 1 - перепрыгнута 1 клетка, 2 - простой ход
             var checkDiag = checkDiagonalMove(); // проверка движения по диоганали
             var backMoveWithoutHit = isBackMoveWithoutHit(checkJump); // вернет true, если ходим назад не дамкой
-            var necessaryToHit = isNecessaryToHit();
+            var approvedAction = isApprovedAction(); // вернет true, если нужно бить и пытаем походить не туда
             //проверяем разрешен ли ход
             // если разрешен, двигаем шашку, если нет-возвращаем ее обратно где взяли
 
-            if (!checkColor && checkDiag && checkJump && !backMoveWithoutHit && !necessaryToHit) { // если (нет шашки в месте отпуска кнопки мышки) и (движение по диоганали) и (была перепрыгнута чужая шашка или простой ход) и (нет движения назад, когда был сделан простой ход) и (не обязательно бить))
+            if (!checkColor && checkDiag && checkJump && !backMoveWithoutHit && (approvedAction || checkJump ==1)) { // если (нет шашки в месте отпуска кнопки мышки) и (движение по диоганали) и (была перепрыгнута чужая шашка или простой ход) и (нет движения назад, когда был сделан простой ход) и (не обязательно бить))
                 // создаем новую шашку и добавляем ее в массив, отслеживающий перемещения
                 var newPiece = new Piece(cellCoordinates[0], cellCoordinates[1], checkKingMe(), WHOS_TURN_IS_IT);
                 checkerTracker.push(newPiece);
@@ -490,20 +490,27 @@
         }
 
         // Проверка, есть ли еще шашки, что бил этот игрок
-        function isAnotherCheckerToHit() {
-            var anotherToHit = false;
+        function isAnotherCheckerToHit(celling) {
+            var anotherToHit = undefined;
+            var cell = [];
+
+            if (celling.row && celling.col) {
+                cell[0] = celling.col;
+                cell[1] = celling.row;
+            }
+
             for (var i = 1; i <= 2; i++) {
                 for (var j = 1; j <= 2; j++) {
                     var x = i % 2 === 0 ? 1 : -1;
                     var y = j % 2 === 0 ? 1 : -1;
-                    var colTemp = cellCoordinates[0] + x;
-                    var rowTemp = cellCoordinates[1] + y;
+                    var colTemp = cell[0] + x;
+                    var rowTemp = cell[1] + y;
                     var siblingChecker; // Соседняя шашка
                     // если есть шашка на соседней клетке и она другого цвета, нужно проверить ее соседей на предмет пустой клетки
                     for (var k = 0; k < checkerTracker.length; k++) {
                         if (checkerTracker[k].col == colTemp && checkerTracker[k].row == rowTemp && checkerTracker[k].color != WHOS_TURN_IS_IT) {
                             siblingChecker = checkerTracker[k];
-                            var anotherToHit = checkFreeCell(colTemp + x, rowTemp + y);
+                            anotherToHit = checkFreeCell(colTemp + x, rowTemp + y);
                             if (anotherToHit) {
                                 break;
                             }
@@ -523,20 +530,34 @@
 
         // Проверяем соседнюю по движению пустую клетку
         function checkFreeCell(colTemp, rowTemp) {
-            for (var i = 0; i < checkerTracker.length; k++) {
-                if (checkerTracker[i].col != colTemp && checkerTracker[i].row != rowTemp) {
-                    return true;
+            for (var i = 0; i < checkerTracker.length; i++) {
+                if (checkerTracker[i].col == colTemp && checkerTracker[i].row == rowTemp) {
+                    return false;
                 }
             }
-            return false;
+            return [colTemp, colTemp];
         }
 
         // TODO Проверка клетки с которой стартуем, есть ли рядом другого цвета шашки и за ними пустое место (Обязательно бить)
-        function isNecessaryToHit() {
-            // TODO Вернуть true, если есть хоть 1 чужая шашка рядом и есть место, куда бить.
-            // TODO Поменять логику из isAnotherCheckerToHit для поля старта. Сделать 1 функцию.
-            // TODO Если necessaryToHit, то передать поле старта. Если isAnotherCheckerToHit - то поредавать поле установки шашки.
-            return false;
+        function isApprovedAction() {
+            var sortedCoordinates = [];
+            var isTrue = true;
+            for (var i = 0; i < checkerTracker.length; i++) {
+                if (checkerTracker[i].color == WHOS_TURN_IS_IT) { // только такого же цвета
+                    sortedCoordinates.push(checkerTracker[i]);
+                }
+            }
+            sortedCoordinates.push(draggingChecker);
+
+            for (var j = 0; j < sortedCoordinates.length; j++) { // проверяем все свои шашки
+                var freeCell = isAnotherCheckerToHit(sortedCoordinates[j]);
+
+                if ((freeCell && freeCell[0] != cellCoordinates[0] && freeCell[1] != cellCoordinates[1])) {
+                    isTrue= false;
+                }
+            }
+
+            return isTrue;
         }
 
         function removeChecker() {
@@ -576,7 +597,7 @@
                 newGame();
             } else {
                 //  если игра не закончена
-                if ((checkJump === 1 && !isAnotherCheckerToHit()) || checkJump !== 1) {
+                if ((checkJump === 1 && !isAnotherCheckerToHit(cellCoordinates)) || checkJump !== 1) {
                     if (WHOS_TURN_IS_IT == BlackCheck) {
                         WHOS_TURN_IS_IT = WhiteCheck;
                     } else if (WHOS_TURN_IS_IT == WhiteCheck) {
