@@ -6,14 +6,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="http://bootstraptema.ru/plugins/2016/bootsnav/bootsnav.css" /> 
     <link rel="stylesheet" href="menu.css" />
+    <link rel="stylesheet" href="contacts.css" />
 
     <title>Checkers</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="http://bootstraptema.ru/plugins/2016/bootsnav/bootsnav.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    
+
     <script>
         //определяем константы
+        var timer; //для анимыции
         var SQUARE_SIZE = 60;// описали размер клетки
         var BOARD_WIDTH = SQUARE_SIZE * 8; //ширина доски
         var BOARD_HEIGHT = SQUARE_SIZE * 8;//высота доски
@@ -47,6 +49,8 @@
             scoreCard.innerHTML += "<div id='player_two' class='player'>Вынік другога гульца: <span id='player_two_score'></span></div>";
             //информируем кто должен сделать ход
             scoreCard.innerHTML += "<div id='whosturn'></div>";
+            //информация об победителе
+            scoreCard.innerHTML += "<div id='winnerName'></div>";
             // проверяем если local storage поддерживается
             if (supportsLocalStorage()) {
                 gameInProgress = localStorage["checkers.game.in.progress"];//gameInProgress  в данном случае это значение хранилища localStorage с ключом checkers.game.in.progress
@@ -538,7 +542,54 @@
                 // сбрасываем gameInProgress flag
                 gameInProgress = false;
                 // обьявляем пользователя победителем и начинаем игру заново
-                alert("Пераможца" + winner + "!");
+                //Анимация
+                $('#canvaseffect, #winnerName').show();
+                resultGame="Пераможца" +"\n"+ winner + "!";
+                var EL = document.getElementById('winnerName');
+                EL.innerHTML= resultGame;
+                var w = canvaseffect.width = window.innerWidth,
+                h = canvaseffect.height = window.innerHeight,
+                ctx = canvaseffect.getContext('2d'),
+                
+                total = w,
+                accelleration = .05,
+                
+                size = w/total,
+                occupation = w/total,
+                repaintColor = 'rgba(0, 0, 0, .04)'
+                colors = [],
+                dots = [],
+                dotsVel = [];
+
+                var portion = 360/total;
+                for(var i = 0; i < total; ++i){
+                colors[i] = portion * i;
+                
+                dots[i] = h;
+                dotsVel[i] = 10;
+                }
+
+                function anim(){
+                timer = window.requestAnimationFrame(anim);
+                
+                ctx.fillStyle = repaintColor;
+                ctx.fillRect(0, 0, w, h);
+                
+                for(var i = 0; i < total; ++i){
+                var currentY = dots[i] - 1;
+                dots[i] += dotsVel[i] += accelleration;
+                
+                ctx.fillStyle = 'hsl('+ colors[i] + ', 80%, 50%)';
+                ctx.fillRect(occupation * i, currentY, size, dotsVel[i] + 1);
+                
+                if(dots[i] > h && Math.random() < .01){
+                dots[i] = dotsVel[i] = 0;
+                }
+                }
+                }
+                //Анимация
+                anim();
+                //alert("Пераможца" + winner + "!");
                 newGame();
             } else {
                 //  если игра не закончена
@@ -574,6 +625,8 @@
             return kingMe;
         }
         function restartGame() {
+            window.cancelAnimationFrame(timer);//Для анимации
+            $('#canvaseffect,#winnerName').hide();//Для анимации
             newGame();
         }
         function supportsLocalStorage() {
@@ -734,6 +787,41 @@
         #restart_game:hover span::before {
             opacity: 0;
         }
+        #ch1 {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+        }
+
+        .rulesLi, h1, h2 {
+            text-align: left;
+            padding-left: 30px;
+        }
+
+        #rulesContainer {
+            position: absolute;
+            top: 150px;
+        }
+
+        .containerContacts {
+            position: absolute;
+            top: 50px; 
+        }
+
+        /* Для анимации*/
+        #winnerName {
+            color: rgb(255, 255, 255);
+            text-align: center;
+            font-size: 500%;
+            text-shadow: rgb(204, 204, 204) 0px 1px 0px, rgb(201, 201, 201) 0px 2px 0px, rgb(187, 187, 187) 0px 3px 0px, rgb(185, 185, 185) 0px 4px 0px, rgb(170, 170, 170) 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 6px 1px, rgba(0, 0, 0, 0.1) 0px 0px 5px, rgba(0, 0, 0, 0.3) 0px 1px 3px, rgba(0, 0, 0, 0.15) 0px 3px 5px, rgba(0, 0, 0, 0.2) 0px 5px 10px, rgba(0, 0, 0, 0.2) 0px 10px 10px, rgba(0, 0, 0, 0.1) 0px 20px 20px;
+            }
+        #canvaseffect {
+            position:absolute;
+            top:0; left:0;
+            opacity:.8;
+            }
+        /* Для анимации*/
+
     </style>
 
 </head>
@@ -760,9 +848,110 @@
 <canvas id="board">
     <span id="no_html5">Your Browser Does Not Support HTML5's Canvas Feature. Please Try Again Using Either Chrome Or Safari.</span>
 </canvas>
+<canvas id="canvaseffect"></canvas>
 <div id="score_card"></div>
-<div id="rules">Правілы</div>
-<div id="contacts">Кантакты</div>
+<div id="rules">
+    <img id="ch1" src="ch1.jpg">
+    <div id="rulesContainer">
+    <h1>Правілы</h1>
+    <h2>Правілы хода</h2>
+    <ul class="rulesLi">
+        <li> Простая шашка ходзіць па дыяганалі наперад на адну клетку. 
+            Пры дасягненні любога поля апошняй гарызанталі, простая шашка ператвараецца ў дамку.</li>
+        <li> Дамкі ходзіць па дыяганалі на любое вольнае поле як наперад, так і назад.</li>
+    </ul>
+    <h2>Правілы ўзяцця</h2>
+    <ul class="rulesLi">
+        <li>Простая шашка, якая знаходзіцца побач з шашкай суперніка, за якой маецца свабоднае поле, пераносіцца праз
+             гэтую шашку на гэта свабоднае полі. Калі ёсць магчымасць працягнуць ўзяцце іншых шашак суперніка, то гэта 
+             ўзяцце працягваецца пакуль што б'е шашка ня дасягне становішча, з якога бой немагчымы. Пабітыя шашкі і 
+             дамкі здымаюцца толькі пасля завяршэння ходу. Ўзяцце просты шашкай вырабляецца як наперад, так і назад.</li>
+        <li>Дамкі б'е па дыяганалі, як наперад, так і назад, і становіцца на любое вольнае поле пасля пабітай шашкі.</li>
+        <li>Пры бое праз дамочное поле простая шашка ператвараецца ў дамку і працягвае бой па правілах дамкі.</li>
+        <li>Пры ўзяцці прымяняецца правіла турэцкага ўдару - за адзін ход шашку праціўніка можна было забіць толькі 
+            адзін раз. Гэта значыць, калі пры бое некалькіх шашак суперніка шашка або дамкі паўторна выходзіць на 
+            ўжо пабітую шашку, то ход спыняецца.</li>
+        <li>Пры некалькіх варыянтах ўзяцця, напрыклад, адну шашку ці дзве, гулец выбірае варыянт ўзяцця па сваім 
+            меркаванні.</li>
+    </ul>
+    </div>
+    
+</div>
+<div id="contacts">
+        <div class="containerContacts">
+                
+                 <h1 class="text-center">Кантакты</h1>
+                 <div class="row">
+                
+                 <div class="col-sm-6">
+                 <div class="testimonial testimonial-primary">
+                 <div class="testimonial-section">
+                 Добра напісаная праграма - гэта праграма, напісаная 2 разы.
+                 </div>
+                 <div class="testimonial-desc">
+                 <img src="http://bootstraptema.ru/snippets/icons/2016/mia/2.png" alt="" />
+                 <div class="testimonial-you">
+                 <div class="testimonial-you-name">Аляксандар Балаболаў</div>
+                 <div class="testimonial-you-designation">Java-распрацоўшчык</div>
+                 <a href="https://github.com/agb88" class="testimonial-you-company">Github</a>
+                 </div>
+                 </div>
+                 </div> 
+                 </div>
+                 
+                 <div class="col-sm-6">
+                 <div class="testimonial testimonial-info">
+                 <div class="testimonial-section">
+                 Паляпшэнне прадукту, якi працуе, прыводзіць да яго пагаршэння.
+                 </div>
+                 <div class="testimonial-desc">
+                 <img src="http://bootstraptema.ru/snippets/icons/2016/mia/3.png" alt="" />
+                 <div class="testimonial-you">
+                 <div class="testimonial-you-name">Дзмітрый Навой</div>
+                 <div class="testimonial-you-designation">Web-распрацоўшчык</div>
+                 <a href="https://github.com/nepey" class="testimonial-you-company">Github</a>
+                 </div>
+                 </div>
+                 </div> 
+                 </div>
+                 
+                 <div class="col-sm-6">
+                 <div class="testimonial testimonial-success">
+                 <div class="testimonial-section">
+                 Добра задакументавана баг, аўтаматычна становіцца фічай.
+                 </div>
+                 <div class="testimonial-desc">
+                 <img src="http://bootstraptema.ru/snippets/icons/2016/mia/4.png" alt="" />
+                 <div class="testimonial-you">
+                 <div class="testimonial-you-name">Андрэй Балотнiк</div>
+                 <div class="testimonial-you-designation">Java-распрацоўшчык</div>
+                 <a href="https://github.com/bogdanka" class="testimonial-you-company">Github</a>
+                 </div>
+                 </div>
+                 </div> 
+                 </div>
+                 
+                   
+                 <div class="col-sm-6">
+                 <div class="testimonial testimonial-warning-bg">
+                 <div class="testimonial-section">
+                 Нішто так не абмяжоўвае палёт думкі пачаткоўца праграміста, як кампілятар.
+                 </div>
+                 <div class="testimonial-desc">
+                 <img src="http://bootstraptema.ru/snippets/icons/2016/mia/11.png" alt="" />
+                 <div class="testimonial-you">
+                 <div class="testimonial-you-name">Аляксндра Жукава</div>
+                 <div class="testimonial-you-designation">Web-дызайнер</div>
+                 <a href="https://github.com/AliaZhukava/" class="testimonial-you-company">Github</a>
+                 </div>
+                 </div>
+                 </div> 
+                 </div>
+                                 
+                 </div><!-- /.row -->
+                
+                </div><!-- /.container -->
+</div>
 <footer></footer>
 <script type="text/javascript">
     initializeGame();
